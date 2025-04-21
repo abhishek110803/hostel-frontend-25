@@ -3,10 +3,11 @@ import Search1 from "./SearchRoll/Search1";
 import DocumentVerification from "./DocumentVerification";
 import Rmedt from "./Rmedt/Rmedt";
 import AdminMandatoryDocs from "./AdminMandatoryDocs";
+import EditDatabase from "./EditDB/EditDatabase";
 
 export default function AdminMainPage() {
     const [popup, setPopup] = useState("none");
-    const features = ["Allow Disallow Students", "Verify Student Docs", "Edit Rooms", "Set Mendatory Docs"];
+    const features = ["Allow Disallow Students", "Verify Student Docs", "Edit Rooms", "Set Mendatory Docs", "Edit Database"];
 
     return (
         <>
@@ -36,6 +37,7 @@ export default function AdminMainPage() {
                         { popup === features[1] && <DocumentVerification />}
                         { popup === features[2] && <Rmedt />}
                         { popup === features[3] && <AdminMandatoryDocs />}
+                        { popup === features[4] && <EditDatabase />}
                     </div>
                     <button onClick={() => setPopup("none")} className="absolute top-4 right-4 bg-white px-2 rounded-lg">
                         Close
