@@ -21,7 +21,10 @@ export default function SelfVerification() {
               <FirstYear />
             </>
         } */}
-        <FirstYear />
+        {/* <FirstYear /> */}
+
+        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar />}
+
 
       </div>
       <SelfVerificationTable />

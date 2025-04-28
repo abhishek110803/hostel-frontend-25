@@ -12,7 +12,9 @@ export default function FinalVerification() {
     <>
       <Steps />
       <div className="hidden md:block">
-        <FirstYear />
+        {/* <FirstYear /> */}
+        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar />}
+
       </div>
       <SelfVerificationTable />
     </>

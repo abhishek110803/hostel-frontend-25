@@ -8,13 +8,28 @@ import toast from "react-hot-toast";
 const FirstYearProcessBar = () => {
   const navigate = useNavigate();
 
+
+  /**
+   * 
+   * 
+   * 
+   *  change pass - 		      0
+      mobile verification -   1
+      applicantion form - 	  2
+      upload docx - 		      3
+      self verification - 	  4
+      roommate selection -    5.1
+      room booking - 		      5.2
+      confirmation page -   	6
+   */
+
   const steps = [
     { name: "Change Password", href: "/FirstYearChangePassword" }, //0
     { name: "Mobile Verification", href: "/Otp" }, //1
     { name: "Application Form", href: "/RegistrationForm" }, //2
     { name: "Upload Documents", href: "/DocumentUpload" }, //3
     { name: "Self Verification", href: "/SelfVerification" }, //4
-    { name: "Room Booking", href: "/Allotment" }, //5
+    { name: "Room Booking", href: "/Allotment" }, //5.2
     { name: "Confirmation Page", href: "/confirmationPage" }, //6
   ];
 

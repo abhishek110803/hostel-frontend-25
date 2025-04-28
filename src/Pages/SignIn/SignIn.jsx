@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import Header from "../../components/Header/Header";
 import ReCAPTCHA from "react-google-recaptcha";
-import {Alert } from "@mui/material";
+import { Alert } from "@mui/material";
 import { Captcha } from "../../components/CAPTACH/Captcha";
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ const SignIn = () => {
   const [showCaptcha, setShowCaptcha] = useState(true);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
- 
+
   const { updateSession } = useSession();
 
 
@@ -103,7 +103,7 @@ const SignIn = () => {
         // session.isSingle = Boolean(reisSingleisSingles?.data?.);
         // session.isSingle = res?.data?.course_sem === "btech7";
 
-        
+
         session.isSingle = false;
         const course_sem = splitCourseSem(res?.data?.course_sem);
         session.course = course_sem?.course;
@@ -112,19 +112,11 @@ const SignIn = () => {
         session.form_uploaded = res?.data.form_uploaded;
         session.doc_uploaded = res?.data.doc_uploaded;
         session.role = "user";
-        session.stepIndex = session.form_uploaded + session.doc_uploaded;
+        // session.stepIndex = session.form_uploaded + session.doc_uploaded;
+        session.step = Number(res?.data?.step);
 
-        // localStorage.setItem('session', JSON.stringify(session));
         updateSession(session);
-        // setSession(session);
-        // if (session.doc_uploaded === 1) navigate('/Roommate')
-        // else if (session.form_uploaded === 1) navigate('/DocumentUpload')
-        // else
-        // if (session.stepIndex === 0) {
-        navigate("/RegistrationForm");
-        // } else {
-        // navigate("/DocumentUpload");
-        // }
+        // navigate("/RegistrationForm");
       }
     } catch (error) {
       console.error("Error Logging In the user.", error);

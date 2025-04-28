@@ -106,14 +106,18 @@ const DocumentUpload = () => {
     <>
       <Steps />
       <div className="hidden md:block">
-        {
+        {/* {
           (session.isSingle === false) ?
             <StepProcessBar /> :
             <>
-              {/* <ProcessBar /> */}
+              // <ProcessBar />
               <FirstYear />
             </>
-        }
+        } */}
+
+
+        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar />}
+
       </div>
       <div className="flex justify-center align-center mb-2">
         <section className="bg-white w-full lg:w-2/3 h-full">

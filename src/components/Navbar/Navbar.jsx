@@ -77,19 +77,19 @@ function NavBar() {
             Steps
           </Link>
 
-          {/* <Link to="/Hostels" className="btn btn-outline-primary mx-1">
+          <Link to="/Hostels" className="btn btn-outline-primary mx-1">
             <OfficeBuildingIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
             Hostels
-          </Link> */}
-          {/* <Link to="/Otp" className="btn btn-outline-primary mx-1">
+          </Link>
+          <Link to="/Otp" className="btn btn-outline-primary mx-1">
             <OfficeBuildingIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
             Otp
-          </Link> */}
+          </Link>
           {(!session) && <>
-            {/* <Link to="/SignUp" className="btn btn-outline-primary mx-1">
+            <Link to="/SignUp" className="btn btn-outline-primary mx-1">
               <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
               Signup
-            </Link> */}
+            </Link>
             <Link to="/SignIn" className="btn  bg-blue-700 text-white btn-outline-primary mx-1">
               <ClipboardListIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
               Login
@@ -140,13 +140,13 @@ function NavBar() {
               </Link>
               {(!session) &&
                 <>
-                  {/* <Link
+                  <Link
                     to="/SignUp"
                     className="text-blue-600 hover:text-blue-700 py-2 w-full text-left ml-3"
                   >
                     <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
                     Signup
-                  </Link> */}
+                  </Link>
                   <Link
                     to="/SignIn"
                     className="text-blue-600  hover:text-blue-700 py-2 w-full text-left ml-3"
@@ -166,7 +166,7 @@ function NavBar() {
                   </Link>
                 }
               </>}
-              {/* <Link
+              <Link
                 to="/HostelSummary"
                 className="text-blue-600 hover:text-blue-700 py-2 w-full text-left ml-3"
               >
@@ -186,7 +186,7 @@ function NavBar() {
               >
                 <KeyIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
                 Admin login
-              </Link> */}
+              </Link>
             </div>
           </div>
         )}

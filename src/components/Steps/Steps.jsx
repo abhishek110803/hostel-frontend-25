@@ -64,10 +64,10 @@ function NavBar1() {
           >
             <HomeIcon className="h-6 text-white w-6" />
           </button>
-          {/* <Navbar.Brand onClick={() => navigate('/')} className="text-lg font-bold mx-3 cursor-pointer">
+          <Navbar.Brand onClick={() => navigate('/')} className="text-lg font-bold mx-3 cursor-pointer">
             <span className="text-white">Home</span>
 
-          </Navbar.Brand> */}
+          </Navbar.Brand>
         </div>
 
 
@@ -81,10 +81,10 @@ function NavBar1() {
           )}
         </Navbar.Toggle>
         <div className="hidden md:flex ml-auto items-center">
-          {/* <Link to="/" className="btn btn-outline-primary mx-1">
+          <Link to="/" className="btn btn-outline-primary mx-1">
             <AcademicCapIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
             Home
-          </Link> */}
+          </Link>
           <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1 text-white" /><span className="mr-3 text-lg font-bold text-white"> {session?.application_id}</span>
           <Link to="/Changepassword" className="btn btn-outline-white bg-yellow-700  hover:bg-yellow-500 text-lg font-bold  btn-outline-white text-white mx-1">
             <Edit className="h-5 w-5 inline-block -mt-1 mr-1" />
@@ -99,13 +99,13 @@ function NavBar1() {
         {isOpen && (
           <div className="absolute top-14 right-4 w-52 bg-white shadow-lg z-50 rounded-lg md:hidden">
             <div className="flex flex-col items-center">
-              {/* <Link
+              <Link
                 to="/"
                 className="text-blue-600 hover:text-blue-700 py-2 w-full text-left ml-3"
               >
                 <AcademicCapIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
                 Home
-              </Link> */}
+              </Link>
               <div className="d-md-none px-10">
                 {session.isSingle === true ? <ProcessBar /> : <StepProcessBar />}
               </div>

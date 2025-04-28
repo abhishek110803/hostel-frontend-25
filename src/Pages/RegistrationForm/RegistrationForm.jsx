@@ -228,7 +228,8 @@ const RegistrationForm = () => {
               <FirstYear />
             </>
         } */}
-        <FirstYear />
+
+        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar/>}
 
       </div>
       <div className="flex justify-center align-center  md:h-min-screen md:py-8 md:px-4 md:lt-sm:mt-0">

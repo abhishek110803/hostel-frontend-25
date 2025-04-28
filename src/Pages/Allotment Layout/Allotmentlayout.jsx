@@ -209,7 +209,9 @@ function JustifiedExample() {
     <>
       <Steps />
       <div className=" hidden md:block">
-        <FirstYear />
+        {/* <FirstYear /> */}
+        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar />}
+
       </div>
       <div className=" p-7  sticky top-7 z-1 bg-zinc-50">
         <h1 className="text-center bold text-4xl m-auto font-black ">

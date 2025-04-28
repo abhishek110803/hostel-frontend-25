@@ -89,8 +89,8 @@ export default function EditDatabase() {
     }
     useEffect(() => {
         const getData = async () => {
-            const responce = await axiosInstance.get('/get_tables_columns.php')
-            setData(responce.data.data);
+            const response = await axiosInstance.get('/get_tables_columns.php')
+            setData(response.data.data);
         }
         getData();
     }, [])
@@ -99,7 +99,7 @@ export default function EditDatabase() {
             <h1 className="text-xl font-bold">Edit Database</h1>
             <select className="w-full p-2 rounded border border-gray-300" onChange={handleTableChange}>
                 <option value="">Select a Table</option>
-                {[...new Set(data.map(item => item.table_name))].map((table, idx) => (
+                {[...new Set(data.map(item => item.TABLE_NAME))].map((table, idx) => (
                     <option key={idx} value={table}>{table}</option>
                 ))}
             </select>
@@ -123,8 +123,8 @@ export default function EditDatabase() {
                         <label className="font-semibold">set Column:</label>
                         <select className="p-2 rounded border border-gray-300" value={targetCol} onChange={(e) => setTargetCol(e.target.value)}>
                             <option value="">Select Target Column</option>
-                            {data.filter(d => d.table_name === tables).map((col, i) => (
-                                <option key={i} value={col.column_name}>{col.column_name}</option>
+                            {data.filter(d => d.TABLE_NAME === tables).map((col, i) => (
+                                <option key={i} value={col.COLUMN_NAME}>{col.COLUMN_NAME}</option>
                             ))}
                         </select>
                         <label className="font-semibold">to new value:</label>
@@ -134,8 +134,8 @@ export default function EditDatabase() {
                         <label className="font-semibold">where column:</label>
                         <select className="p-2 rounded border border-gray-300" value={condCol} onChange={(e) => setCondCol(e.target.value)}>
                             <option value="">Select Condition Column</option>
-                            {data.filter(d => d.table_name === tables).map((col, i) => (
-                                <option key={i} value={col.column_name}>{col.column_name}</option>
+                            {data.filter(d => d.TABLE_NAME === tables).map((col, i) => (
+                                <option key={i} value={col.COLUMN_NAME}>{col.COLUMN_NAME}</option>
                             ))}
                         </select>
                         <label className="font-semibold">has value:</label>

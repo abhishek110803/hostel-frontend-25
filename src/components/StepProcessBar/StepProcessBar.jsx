@@ -8,115 +8,106 @@ import toast from "react-hot-toast";
 const StepProcessBar = () => {
   const navigate = useNavigate();
   const { session } = useSession();
+  const location = useLocation();
 
   const steps = [
-    { name: "Application Form", href: "/RegistrationForm" },
-    { name: "Upload Documents", href: "/DocumentUpload" },
-    { name: "Self Verification", href: "/SelfVerification" },
-    { name: "Room-mate Selection", href: "/RoomMate" },
-    { name: "Room Booking", href: "/Allotment" },
-    { name: "Confirmation Page", href: "/confirmationPage" },
-  ]
+    { stepNumber: 2, name: "Application Form", href: "/RegistrationForm" },
+    { stepNumber: 3, name: "Upload Documents", href: "/DocumentUpload" },
+    { stepNumber: 4, name: "Self Verification", href: "/SelfVerification" },
+    { stepNumber: 5.1, name: "Room-mate Selection", href: "/RoomMate" },
+    { stepNumber: 5.2, name: "Room Booking", href: "/Allotment" },
+    { stepNumber: 6, name: "Confirmation Page", href: "/confirmationPage" },
+  ];
 
-  const location = useLocation();
-  const [currentStep, setCurrentStep] = useState(steps.findIndex(step => step?.href === location.pathname));
+  const [currentStep, setCurrentStep] = useState(
+    steps.findIndex(step => step.href === location.pathname)
+  );
 
-
-
-  const handleStepClick = (index, href) => {
-    // return toast.error("Complete all the steps in a single flow.");
-    if (session?.stepIndex >= 5) {
+  const handleStepClick = (index, href, stepNumber) => {
+    if (parseInt(session?.step) >= 5) {
+      if ([5.1, 5.2].includes(stepNumber)) {
+        setCurrentStep(index);
+        navigate(href);
+      } else {
+        toast.error("You can't navigate to other steps now.");
+      }
       return;
     }
-    if (index > session.stepIndex && (index !== '4' || index !== '3')) {
-      // console.log(first)
-      return toast.error('Please complete all previous steps to move forward.')
-    };
-    if (index <= 2) {
-      return toast.error(`You can't go back now.`)
+
+    if (stepNumber != session.stepIndex) {
+      console.log(session.stepIndex)
+      return toast.error('Complete all steps in order.');
     }
+
+    if (stepNumber < 2) {
+      return toast.error(`You can't go back now.`);
+    }
+
     setCurrentStep(index);
     navigate(href);
   };
 
-
-  // useEffect(() => {
-  //   if (session.isSingle !== true) {
-  //     setSteps([
-  //       { name: "Application Form", href: "/RegistrationForm" },
-  //       { name: "Upload Documents", href: "/DocumentUpload" },
-  //       { name: "Self Verification", href: "/SelfVerification" },
-  //       { name: "Room-mate Selection", href: "/RoomMate" },
-  //       { name: "Room Booking", href: "/Allotment" },
-  //       { name: "Confirmation Page", href: "/confirmationPage" },
-  //     ])
-  //   } else {
-  //     setSteps([
-  //       { name: "Application Form", href: "/RegistrationForm" },
-  //       { name: "Upload Documents", href: "/DocumentUpload" },
-  //       { name: "Self Verification", href: "/SelfVerification" },
-  //       // { name: "Room-mate Selection", href: "/RoomMate" },
-  //       { name: "Room Booking", href: "/Allotment" },
-  //       { name: "Confirmation Page", href: "/confirmationPage" },
-  //     ])
-  //   }
-
-  // }, [session.stepIndex])
-
   useEffect(() => {
     if (session) {
-      if (currentStep > session?.stepIndex || session?.stepIndex === 5) {
-        navigate(steps[session?.stepIndex]?.href)
+      const foundStep = steps.find(step => step.stepNumber === session?.stepIndex);
+      if (foundStep) {
+        navigate(foundStep.href);
       }
-    };
-  }, [session?.stepIndex, currentStep]);
+    }
+  }, [session?.stepIndex]);
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const stepIndex = steps.findIndex(step => step?.href === currentPath);
+    const stepIndex = steps.findIndex(step => step.href === currentPath);
     setCurrentStep(stepIndex);
-    // if (session.stepIndex === 5) {
-    //   navigate(steps[session?.stepIndex]?.href);
-    //   return;
-    // }
-    if (session?.stepIndex != stepIndex && ![3, 4].includes(stepIndex)) {
-      console.log('step', stepIndex, session.stepIndex)
-      navigate(steps[session?.stepIndex]?.href);
+
+    const matchedStep = steps[stepIndex];
+    if (matchedStep && matchedStep.stepNumber !== session?.stepIndex && ![5.1, 5.2].includes(matchedStep.stepNumber)) {
+      const sessionStep = steps.find(step => step.stepNumber === session?.stepIndex);
+      if (sessionStep) {
+        navigate(sessionStep.href);
+      }
     }
-  }, [location.pathname, steps]);
+  }, [location.pathname, session?.stepIndex]);
 
-  if (session?.stepIndex > 1 && (currentStep === 0 || currentStep === 1)) {
-    navigate(steps[session?.stepIndex].href);
-  }
-
+  useEffect(() => {
+    if (session?.stepIndex > 1 && currentStep >= 0 && currentStep <= 1) {
+      const sessionStep = steps.find(step => step.stepNumber === session?.stepIndex);
+      if (sessionStep) {
+        navigate(sessionStep.href);
+      }
+    }
+  }, [currentStep, session?.stepIndex]);
 
   return (
-    (session.isSingle !== true) ? (<div className="container mx-auto mt-5">
-      {/* Horizontal Steps for larger screens */}
-      <div className="hidden md:block">
-        <Steps current={currentStep}>
-          {steps.map((step, index) => (
-            <Steps.Item
-              key={index}
-              title={step.name}
-              onClick={() => handleStepClick(index, step.href)}
-            />
-          ))}
-        </Steps>
+    (session.isSingle !== true) ? (
+      <div className="container mx-auto mt-5">
+        {/* Horizontal Steps for larger screens */}
+        <div className="hidden md:block">
+          <Steps current={currentStep}>
+            {steps.map((step, index) => (
+              <Steps.Item
+                key={index}
+                title={step.name}
+                onClick={() => handleStepClick(index, step.href, step.stepNumber)}
+              />
+            ))}
+          </Steps>
+        </div>
+        {/* Vertical Steps for smaller screens */}
+        <div className="block md:hidden">
+          <Steps current={currentStep} vertical>
+            {steps.map((step, index) => (
+              <Steps.Item
+                key={index}
+                title={step.name}
+                onClick={() => handleStepClick(index, step.href, step.stepNumber)}
+              />
+            ))}
+          </Steps>
+        </div>
       </div>
-      {/* Vertical Steps for smaller screens */}
-      <div className="block md:hidden">
-        <Steps current={currentStep} vertical>
-          {steps.map((step, index) => (
-            <Steps.Item
-              key={index}
-              title={step.name}
-              onClick={() => handleStepClick(index, step.href)}
-            />
-          ))}
-        </Steps>
-      </div>
-    </div>) : (<></>)
+    ) : (<></>)
   );
 };
 
