@@ -1,0 +1,16 @@
+/* Add this to your stylesheet */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-pane.fade {
+    animation: fadeInUp 0.5s forwards;
+}
