@@ -5,7 +5,14 @@ import { Search } from "lucide-react";
 import axiosInstance from "../../../Helper/axiosInstance";
 
 // Custom Button component
-const Button = ({ onClick, children, variant, className, size = "md" }) => {
+const Button = ({
+  onClick,
+  children,
+  variant,
+  className,
+  size = "md",
+  type = "button",
+}) => {
   const baseStyles =
     "focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center";
 
@@ -29,6 +36,7 @@ const Button = ({ onClick, children, variant, className, size = "md" }) => {
 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`${baseStyles} ${variantStyles[variant || "default"]} ${
         sizeStyles[size]
@@ -38,14 +46,13 @@ const Button = ({ onClick, children, variant, className, size = "md" }) => {
     </button>
   );
 };
-
 // Custom Input component
 const Input = ({
   value,
   onChange,
   placeholder,
   name,
-  id,
+  rollno,
   type = "text",
   className,
   required = false,
@@ -54,7 +61,7 @@ const Input = ({
     <input
       type={type}
       name={name}
-      id={id}
+      rollno={rollno}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
@@ -67,7 +74,7 @@ const Input = ({
 const Search1 = () => {
   const [rollno, setRollNo] = useState("");
   const [errors, setErrors] = useState({});
-  const [responses, setResponses] = useState([]);
+  const [responses, setResponses] = useState([]); 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -113,10 +120,10 @@ const Search1 = () => {
     fetchResponses(rollno);
   };
 
-  const handleBulkUpdate = async (allowed) => {
+  const handleBulkUpdate = async (rollno,is_allowed) => {
     try {
       const response = await axiosInstance.post(
-        `student_allow_disallow.php?request=update_all_status`, {allowed}
+        `student_allow_disallow.php?request=update_all_status`, {rollno,is_allowed}
       );
 
       console.log(response.data);
@@ -130,10 +137,10 @@ const Search1 = () => {
     }
   };
 
-  const handleSingleResponse = async (id, allowed) => {
+  const handleSingleResponse = async (rollno, is_allowed) => {
     try {
       const response = await axiosInstance.post(
-        `/student_allow_disallow.php?request=update_status`, { id, allowed }
+        `/student_allow_disallow.php?request=update_status`, { rollno, is_allowed }
       );
 
       if (response.data.success) {
@@ -168,7 +175,7 @@ const Search1 = () => {
                   <Input
                     type="text"
                     name="rollno"
-                    id="rollno"
+                    rollno="rollno"
                     value={rollno}
                     onChange={(e) => setRollNo(e.target.value)}
                     className={`bg-white border ${
@@ -185,10 +192,10 @@ const Search1 = () => {
               <Button type="submit">Search</Button>
             </form>
             <div className="flex justify-end space-x-2">
-              <Button variant="success" onClick={() => handleBulkUpdate(true)}>
+              <Button variant="success" onClick={() => handleBulkUpdate(rollno,true)}>
                 Allow All
               </Button>
-              <Button variant="danger" onClick={() => handleBulkUpdate(false)}>
+              <Button variant="danger" onClick={() => handleBulkUpdate(rollno,false)}>
                 Disallow All
               </Button>
             </div>
@@ -200,23 +207,23 @@ const Search1 = () => {
               ) : (
                 responses.map((response) => (
                   <div
-                    key={response.id}
+                    key={response.rollno}
                     className={`p-4 rounded-lg border flex justify-between items-center ${
-                      response.allowed === 1 ? "bg-green-50" : ""
-                    } ${response.allowed === 0 ? "bg-red-50" : ""}`}
+                      response.is_allowed === 1 ? "bg-green-50" : ""
+                    } ${response.is_allowed === 0 ? "bg-red-50" : ""}`}
                   >
                     <span className="flex-1">{response.rollno}</span>
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        variant={response.allowed === 1 ? "default" : "success"}
+                        variant={response.is_allowed === 1 ? "default" : "success"}
                         onClick={() => handleSingleResponse(response.rollno, true)}
                       >
                         Allow
                       </Button>
                       <Button
                         size="sm"
-                        variant={response.allowed === 0 ? "default" : "danger"}
+                        variant={response.is_allowed === 0 ? "default" : "danger"}
                         onClick={() => handleSingleResponse(response.rollno, false)}
                       >
                         Disallow

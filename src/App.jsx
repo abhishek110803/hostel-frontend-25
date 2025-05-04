@@ -53,7 +53,8 @@ import FirstYearChangePassword from "./Pages/Changepassword/FirstYearChangePassw
 import Otp from "./Pages/OTP/Otp";
 import { ThumbUpOffAltSharp } from "@mui/icons-material";
 import AdminMainPage from "./Pages/Admin/AdminMainPage";
-
+import StudentProfile from "./Pages/Admin/Student_profile/student_profile";
+import skip_clerk from "./Pages/Admin/Skip_clerk/skip_clerk";
 
 function App() {
   return (<>
@@ -96,7 +97,7 @@ function App() {
 
 
           {/* Protected routes */}
-          <Route element={<ProtectedRoute role={["user"]} />}>
+          {/* <Route element={<ProtectedRoute role={["user"]} />}> */}
 
             <Route path="/Changepassword" element={<Changepassword />} />
             {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
@@ -104,10 +105,11 @@ function App() {
             <Route path="/RoomMate" element={<RoomMate />} />
             <Route path="/RegistrationForm" element={<RegistrationForm />} />
             <Route path="/DocumentUpload" element={<DocumentUpload />} />
-            <Route path="/SelfVerification" element={<SelfVerification />} />
+            
+          {/* </Route> */}
+          <Route path="/SelfVerification" element={<SelfVerification />} />
             <Route path="/SelfVerificationTable" element={<SelfVerificationTable />} />
             <Route path="/confirmationPage" element={<FinalVerification />} />
-          </Route>
 
           <Route element={<ProtectedRoute role={["clerk", "warden", "admin"]} />}>
             <Route path="/DocumentVerification" element={<DocumentVerification />} />
@@ -117,13 +119,15 @@ function App() {
             <Route path="/Allhostels" element={<Allhostels />} />
           </Route>
         <Route path="/Search" element={<Search1 />} />
+        <Route path="/Student_profile" element={<StudentProfile />} />
+        <Route path="/skip_clerk" element={<skip_clerk />} />
         <Route path="/adminMainPage" element={<AdminMainPage />} />
         </Routes>
         <Footer />
       </SessionProvider>
     </Router></>
   );
-}
+} 
 
 export default App;
 
