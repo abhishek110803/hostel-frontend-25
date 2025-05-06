@@ -6,10 +6,11 @@ import AdminMandatoryDocs from "./AdminMandatoryDocs";
 import StudentProfile from "./Student_profile/student_profile";
 import Skip_Clerk from "./Skip_clerk/skip_clerk";
 import EditDatabase from "./EditDB/EditDatabase";
+import BookRoom from "./BookRoom/BookRoom";
 
 export default function AdminMainPage() {
     const [popup, setPopup] = useState("none");
-    const features = ["Allow Disallow Students", "Verify Student Docs", "Edit Rooms", "Set Mendatory Docs", "Edit Database", "StudentProfile","Skip Clerk"];
+    const features = ["Allow Disallow Students", "Verify Student Docs", "Edit Rooms", "Set Mendatory Docs", "Edit Database", "StudentProfile","Skip Clerk", "Book Room"];
       
     return (
         <>
@@ -42,6 +43,7 @@ export default function AdminMainPage() {
                         { popup === features[4] && <EditDatabase />}
                         { popup === features[5] && <StudentProfile />}
                         { popup === features[6] && <Skip_Clerk />}
+                        { popup === features[7] && <BookRoom />}
 
 
                     </div>
