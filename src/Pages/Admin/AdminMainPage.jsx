@@ -5,43 +5,11 @@ import Rmedt from "./Rmedt/Rmedt";
 import AdminMandatoryDocs from "./AdminMandatoryDocs";
 import StudentProfile from "./Student_profile/student_profile";
 import Skip_Clerk from "./Skip_clerk/skip_clerk";
+import EditDatabase from "./EditDB/EditDatabase";
 
 export default function AdminMainPage() {
     const [popup, setPopup] = useState("none");
-    const features = ["Allow Disallow Students", "Verify Student Docs", "Edit Rooms", "Set Mendatory Docs", "StudentProfile","Skip Clerk"];
-    const Button = ({ onClick, children, variant, className, size = "md" }) => {
-        const baseStyles =
-          "focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center";
-      
-        const variantStyles = {
-          default:
-            "bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 text-white",
-          outline: "border border-gray-300 hover:bg-gray-100 text-gray-700",
-          success:
-            "bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 text-white",
-          danger:
-            "bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 text-white",
-          neutral:
-            "bg-gray-600 hover:bg-gray-700 focus:ring-4 focus:ring-gray-300 text-white",
-        };
-      
-        const sizeStyles = {
-          sm: "text-sm px-4 py-2",
-          md: "text-base px-5 py-2.5",
-          lg: "text-lg px-6 py-3",
-        };
-      
-        return (
-          <button
-            onClick={onClick}
-            className={`${baseStyles} ${variantStyles[variant || "default"]} ${
-              sizeStyles[size]
-            } ${className}`}
-          >
-            {children}
-          </button>
-        );
-      };
+    const features = ["Allow Disallow Students", "Verify Student Docs", "Edit Rooms", "Set Mendatory Docs", "Edit Database", "StudentProfile","Skip Clerk"];
       
     return (
         <>
@@ -71,8 +39,9 @@ export default function AdminMainPage() {
                         { popup === features[1] && <DocumentVerification />}
                         { popup === features[2] && <Rmedt />}
                         { popup === features[3] && <AdminMandatoryDocs />}
-                        { popup === features[4] && <StudentProfile />}
-                        { popup === features[5] && <Skip_Clerk />}
+                        { popup === features[4] && <EditDatabase />}
+                        { popup === features[5] && <StudentProfile />}
+                        { popup === features[6] && <Skip_Clerk />}
 
 
                     </div>
