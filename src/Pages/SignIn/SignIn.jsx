@@ -116,7 +116,7 @@ const SignIn = () => {
         session.step = Number(res?.data?.step);
 
         updateSession(session);
-        // navigate("/RegistrationForm");
+        navigate("/RegistrationForm");
       }
     } catch (error) {
       console.error("Error Logging In the user.", error);

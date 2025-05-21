@@ -65,7 +65,7 @@ function App() {
         <Routes>
           <Route path="/Allotment" element={<HostelAllotmentTable />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/SignIn2" element={<SignIn />} /> 2,3,4th year
+          <Route path="/SignIn2" element={<SignIn />} /> {/*2,3,4th year */}
           <Route path="/SignIn" element={<SignIn1styr />} />
           <Route path="/AdminSignIn" element={<AdminSignIn />} />
           <Route path="/SignUp" element={<SignUp />} />

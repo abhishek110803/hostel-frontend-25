@@ -20,6 +20,7 @@ const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     full_name: "",
     application_id: session?.application_id,
+    rollno: session?.roll,
     father_name: "",
     mother_name: "",
     branch: "",
@@ -28,9 +29,9 @@ const RegistrationForm = () => {
     blood_group: "",
 
     email: '',
-    year: '1',
-    course: '',
-    sem: '1',
+    year: (parseInt(session?.sem)+1)/2,
+    course: session?.course,
+    sem: session?.sem,
     self_mobile: "",
     father_mobile: "",
     mother_mobile: "",
@@ -174,7 +175,7 @@ const RegistrationForm = () => {
   };
 
   const sendForm = async () => {
-    //console.log('form data',formData);
+    console.log('form data',formData);
     delete formData.application_id;
     try {
       let res = axiosInstance.post(`/application_form_insert.php`, formData);
@@ -195,7 +196,7 @@ const RegistrationForm = () => {
       //console.log(res?.data?.status === "success");
       if (res?.data?.status === "success") {
         // setSession(res.data.user);
-        updateSession({ stepIndex: 3});
+        updateSession({ stepIndex: 3, step: res?.data?.step});
         navigate("/DocumentUpload");
       }
     } catch (error) {
@@ -272,18 +273,18 @@ const RegistrationForm = () => {
                       </div>
                       <div className="w-full sm:w-1/2 px-2 min-w-[210px]">
                         <label className="block mb-2 text-sm mt-2 font-medium text-black">
-                          Application Number
+                          {(session?.sem === '1') ? "Application Number" : "Roll Number"}
                           <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           name="application_id"
                           id="application_id"
-                          value={formData.application_id}
+                          placeholder={(session?.sem === '1') ? "Application Number" : "Roll Number"}
+                          value={(session?.sem === '1') ? formData.application_id : formData.rollno}
                           onChange={handleChange}
                           className={`bg-blue-50 border ${errors.application_id ? "border-red-300" : "border-blue-300"
                             } sm:text-sm rounded-lg focus:ring-primary-400 focus:border-primary-400 block w-full p-2.5 bg-blue-200 border-blue-400 placeholder-black text-black focus:ring-blue-300 focus:border-blue-300`}
-                          placeholder="Application number"
                           disabled
                         />
                         {/* {errors.application_id && (
@@ -500,16 +501,15 @@ const RegistrationForm = () => {
                           onChange={handleChange}
                           className={`bg-blue-50 border ${errors.course ? "border-red-300" : "border-blue-300"
                             } sm:text-sm rounded-lg focus:ring-primary-400 focus:border-primary-400 block w-full p-2.5 bg-blue-200 border-blue-400 placeholder-gray-800 text-black focus:ring-blue-300 focus:border-blue-300`}
-                        // disabled
+                        disabled
                         >
                           <option value="">SELECT</option>
-                          {/* <option value="1st">1st</option> */}
-                          {/* <option value="btech">B.Tech</option> */}
+                          <option value="btech">B.Tech</option>
                           <option value="mtech">M.Tech</option>
-                          {/* <option value="bsc">Bsc</option> */}
+                          <option value="bsc">Bsc</option>
                           <option value="mba">MBA</option>
                           <option value="msc">Msc</option>
-                          {/* <option value="phd">Ph.d</option> */}
+                          <option value="phd">Ph.d</option>
                         </select>
                         {errors.course && (
                           <div className="text-sm text-red-400 mt-2">

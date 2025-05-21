@@ -92,7 +92,7 @@ const DocumentUpload = () => {
       //console.log('Response after toast promise:', res?.data);
 
       if (res?.data?.status === "success") {
-        updateSession({ stepIndex: 4 });
+        updateSession({ stepIndex: 4,step:res?.data?.step });
         // navigate("/RoomMate");
       }
     } catch (error) {
