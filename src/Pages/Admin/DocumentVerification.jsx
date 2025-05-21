@@ -32,10 +32,10 @@ const DocumentVerification = () => {
             return data?.response?.data.message;
           },
         });
-        
+
         res = await res;
         console.log("res ka data", res?.data?.form_data);
-        
+
         if (res?.data?.status === "success") {
           setStudents(res?.data?.form_data);
         }
@@ -48,50 +48,54 @@ const DocumentVerification = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
-
-      <div className="flex flex-col flex-grow mt-4">
-        <div className="overflow-y-auto max-h-screen">
-          <table className="min-w-full bg-white border mt-4">
-            <thead>
-              <tr>
-                <th className="px-4 py-2 border">Sr No.</th>
-                <th className="px-4 py-2 border">Student Roll no.</th>
-                <th className="px-4 py-2 border">Details</th>
-                <th className="px-4 py-2 border">Status</th>
-                <th className="px-4 py-2 border">Remarks</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student, index) => (
-                <tr key={student.rollno}>
-                  <td className="px-4 py-2 border">{index + 1}</td>
-                  <td className="px-4 py-2 border">{student.rollno}</td>
-                  <td className="px-4 py-2 border">
-                    <Link
-                      to={`/Sdtdet/${student.rollno}`}
-                      className="font-medium text-blue-600 hover:underline"
-                    >
-                      View
-                    </Link>
-                  </td>
-                  <td
-                  className={`px-4 py-2 border ${
-                    student.clerk_verified === "1"
-                      ? "text-green-500"
-                      : "text-yellow-500"
-                  }`}
-                >
-                  {student.clerk_verified === "1" ? "Verified" : "Pending"}
-                </td>
-                  <td className="px-4 py-2 border">{student.clerk_remarks}</td>
+    <>
+      <div className="flex min-h-screen">
+        <AdminSidebar />
+        <div className="flex flex-col flex-grow mt-4">
+          <div className="overflow-y-auto max-h-screen">
+            <table className="min-w-full bg-white border mt-4">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2 border">Sr No.</th>
+                  <th className="px-4 py-2 border">Student Roll no.</th>
+                  <th className="px-4 py-2 border">Details</th>
+                  <th className="px-4 py-2 border">Status</th>
+                  <th className="px-4 py-2 border">Remarks</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {students.map((student, index) => (
+                  <tr key={student.rollno}>
+                    <td className="px-4 py-2 border">{index + 1}</td>
+                    <td className="px-4 py-2 border">{student.rollno}</td>
+                    <td className="px-4 py-2 border">
+                      <Link
+                        to={`/Sdtdet/${student.rollno}`}
+                        className="font-medium text-blue-600 hover:underline"
+                      >
+                        View
+                      </Link>
+                    </td>
+                    <td
+                      className={`px-4 py-2 border ${
+                        student.clerk_verified === "1"
+                          ? "text-green-500"
+                          : "text-yellow-500"
+                      }`}
+                    >
+                      {student.clerk_verified === "1" ? "Verified" : "Pending"}
+                    </td>
+                    <td className="px-4 py-2 border">
+                      {student.clerk_remarks}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

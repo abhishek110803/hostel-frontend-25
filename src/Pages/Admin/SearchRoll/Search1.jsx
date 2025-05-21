@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdminSidebar from "../AdminSidebar";
 import { Search } from "lucide-react";
 import axiosInstance from "../../../Helper/axiosInstance";
+import AdminSidebar from "../AdminSidebar";
 
 // Custom Button component
 const Button = ({
@@ -74,7 +74,7 @@ const Input = ({
 const Search1 = () => {
   const [rollno, setRollNo] = useState("");
   const [errors, setErrors] = useState({});
-  const [responses, setResponses] = useState([]); 
+  const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -120,10 +120,11 @@ const Search1 = () => {
     fetchResponses(rollno);
   };
 
-  const handleBulkUpdate = async (rollno,is_allowed) => {
+  const handleBulkUpdate = async (rollno, is_allowed) => {
     try {
       const response = await axiosInstance.post(
-        `student_allow_disallow.php?request=update_all_status`, {rollno,is_allowed}
+        `student_allow_disallow.php?request=update_all_status`,
+        { rollno, is_allowed }
       );
 
       console.log(response.data);
@@ -140,7 +141,8 @@ const Search1 = () => {
   const handleSingleResponse = async (rollno, is_allowed) => {
     try {
       const response = await axiosInstance.post(
-        `/student_allow_disallow.php?request=update_status`, { rollno, is_allowed }
+        `/student_allow_disallow.php?request=update_status`,
+        { rollno, is_allowed }
       );
 
       if (response.data.success) {
@@ -155,6 +157,7 @@ const Search1 = () => {
 
   return (
     <div className="flex min-h-screen">
+      <AdminSidebar />
       <section className="min-h-screen lg:m-10 flex-1 items-center justify-center bg-white px-4 py-4 mt-8 md:py-0">
         <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white border-1 border-blue-600 rounded-lg shadow-md overflow-hidden relative">
           <button
@@ -192,10 +195,16 @@ const Search1 = () => {
               <Button type="submit">Search</Button>
             </form>
             <div className="flex justify-end space-x-2">
-              <Button variant="success" onClick={() => handleBulkUpdate(rollno,true)}>
+              <Button
+                variant="success"
+                onClick={() => handleBulkUpdate(rollno, true)}
+              >
                 Allow All
               </Button>
-              <Button variant="danger" onClick={() => handleBulkUpdate(rollno,false)}>
+              <Button
+                variant="danger"
+                onClick={() => handleBulkUpdate(rollno, false)}
+              >
                 Disallow All
               </Button>
             </div>
@@ -216,15 +225,23 @@ const Search1 = () => {
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        variant={response.is_allowed === 1 ? "default" : "success"}
-                        onClick={() => handleSingleResponse(response.rollno, true)}
+                        variant={
+                          response.is_allowed === 1 ? "default" : "success"
+                        }
+                        onClick={() =>
+                          handleSingleResponse(response.rollno, true)
+                        }
                       >
                         Allow
                       </Button>
                       <Button
                         size="sm"
-                        variant={response.is_allowed === 0 ? "default" : "danger"}
-                        onClick={() => handleSingleResponse(response.rollno, false)}
+                        variant={
+                          response.is_allowed === 0 ? "default" : "danger"
+                        }
+                        onClick={() =>
+                          handleSingleResponse(response.rollno, false)
+                        }
                       >
                         Disallow
                       </Button>

@@ -66,7 +66,7 @@
 // const Skip_Clerk = () => {
 //   const [rollno, setRollNo] = useState("");
 //   const [errors, setErrors] = useState({});
-//   const [responses, setResponses] = useState([]); 
+//   const [responses, setResponses] = useState([]);
 //   const [loading, setLoading] = useState(true);
 //   const navigate = useNavigate();
 
@@ -310,7 +310,7 @@ const Input = ({
 const Skip_Clerk = () => {
   const [rollno, setRollNo] = useState("");
   const [errors, setErrors] = useState({});
-  const [responses, setResponses] = useState([]); 
+  const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -356,10 +356,11 @@ const Skip_Clerk = () => {
     fetchResponses(rollno);
   };
 
-  const handleBulkUpdate = async (rollno,skip_clerk) => {
+  const handleBulkUpdate = async (rollno, skip_clerk) => {
     try {
       const response = await axiosInstance.post(
-        `skip_clerk.php?request=update_all_status`, {rollno,skip_clerk}
+        `skip_clerk.php?request=update_all_status`,
+        { rollno, skip_clerk }
       );
 
       console.log(response.data);
@@ -376,7 +377,8 @@ const Skip_Clerk = () => {
   const handleSingleResponse = async (rollno, skip_clerk) => {
     try {
       const response = await axiosInstance.post(
-        `/skip_clerk.php?request=update_status`, { rollno, skip_clerk }
+        `/skip_clerk.php?request=update_status`,
+        { rollno, skip_clerk }
       );
 
       if (response.data.success) {
@@ -391,6 +393,7 @@ const Skip_Clerk = () => {
 
   return (
     <div className="flex min-h-screen">
+      <AdminSidebar />
       <section className="min-h-screen lg:m-10 flex-1 items-center justify-center bg-white px-4 py-4 mt-8 md:py-0">
         <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-white border-1 border-blue-600 rounded-lg shadow-md overflow-hidden relative">
           <button
@@ -428,10 +431,16 @@ const Skip_Clerk = () => {
               <Button type="submit">Search</Button>
             </form>
             <div className="flex justify-end space-x-2">
-              <Button variant="success" onClick={() => handleBulkUpdate(rollno,true)}>
+              <Button
+                variant="success"
+                onClick={() => handleBulkUpdate(rollno, true)}
+              >
                 Allow All
               </Button>
-              <Button variant="danger" onClick={() => handleBulkUpdate(rollno,false)}>
+              <Button
+                variant="danger"
+                onClick={() => handleBulkUpdate(rollno, false)}
+              >
                 Disallow All
               </Button>
             </div>
@@ -452,15 +461,23 @@ const Skip_Clerk = () => {
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        variant={response.skip_clerk === 1 ? "default" : "success"}
-                        onClick={() => handleSingleResponse(response.rollno, true)}
+                        variant={
+                          response.skip_clerk === 1 ? "default" : "success"
+                        }
+                        onClick={() =>
+                          handleSingleResponse(response.rollno, true)
+                        }
                       >
                         Allow
                       </Button>
                       <Button
                         size="sm"
-                        variant={response.skip_clerk === 0 ? "default" : "danger"}
-                        onClick={() => handleSingleResponse(response.rollno, false)}
+                        variant={
+                          response.skip_clerk === 0 ? "default" : "danger"
+                        }
+                        onClick={() =>
+                          handleSingleResponse(response.rollno, false)
+                        }
                       >
                         Disallow
                       </Button>
