@@ -64,7 +64,7 @@ const Rmedt = () => {
 
   const handleSubmit = () => {
     // Handle form submission logic here
-   //console.log({
+    //console.log({
     //   selectedHostel,
     //   roomNumber,
     //   selectedCourses,
@@ -77,6 +77,7 @@ const Rmedt = () => {
 
   return (
     <div className="flex min-h-screen">
+      <AdminSidebar />
       <div className="flex-1 flex items-center justify-center">
         <div className="flex flex-col items-center p-10 rounded-lg shadow-md bg-white">
           <div className="w-full max-w-xs">

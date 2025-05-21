@@ -23,12 +23,12 @@ function AdminSidebar() {
   const sidebarLinks = [
     {
       to: "/HostelSummary",
-      label: "HostelSummary",
+      label: "Hostel Summary",
       icon: DocumentTextIcon,
     },
     {
       to: "/Allhostels",
-      label: "RoomEdits",
+      label: "Room Edits",
       icon: PencilIcon,
     },
     {
