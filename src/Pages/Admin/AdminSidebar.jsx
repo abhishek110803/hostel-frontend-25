@@ -1,5 +1,4 @@
 import React from "react";
-
 import { useSession } from "../../components/ProtectedPath/SessionContext";
 import {
   DocumentTextIcon,
@@ -7,68 +6,91 @@ import {
   CheckCircleIcon,
   SearchIcon,
   LogoutIcon,
+  DocumentAddIcon,
 } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
-import { Edit } from "@mui/icons-material";
+import { Done, Person } from "@mui/icons-material";
+import { Database, Edit, Verified } from "lucide-react";
 
 function AdminSidebar() {
-   
-
-  const { setSession, updateSession, logout } = useSession();
+  const { logout } = useSession();
 
   const handleLogout = async () => {
-
     logout();
+  };
 
-
-  }
-
-
+  // Sidebar links array
+  const sidebarLinks = [
+    {
+      to: "/HostelSummary",
+      label: "Hostel Summary",
+      icon: DocumentTextIcon,
+    },
+    {
+      to: "/Allhostels",
+      label: "Room Edits",
+      icon: PencilIcon,
+    },
+    {
+      to: "/DocumentVerification",
+      label: "Document Verification",
+      icon: CheckCircleIcon,
+    },
+    {
+      to: "/Search",
+      label: "Search Student",
+      icon: SearchIcon,
+    },
+    {
+      to: "/Student_profile",
+      label: "Update Student Profile",
+      icon: Person,
+    },
+    {
+      to: "/skip_clerk",
+      label: "Skip clerk Verification",
+      icon: Verified,
+    },
+    {
+      to: "/EditDB",
+      label: "Edit Database",
+      icon: Database,
+    },
+    {
+      to: "/BookRoomByAdmin",
+      label: "Book Room",
+      icon: Done,
+    },
+    {
+      to: "/AdminMandatoryDocs",
+      label: "Admin Mandatory Docs",
+      icon: DocumentAddIcon,
+    },
+  ];
 
   return (
-    <div className="bg-gray-100 shadow-md w-[15%] sticky top-0 h-[1300px]">
+    <div className="bg-gray-100 shadow-md w-[20%] sticky top-0 h-[1300px]">
       <div className="p-4">
         <nav className="flex flex-col">
-          <Link
-            to="/HostelSummary"
-            className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
-          >
-            <DocumentTextIcon className="h-5 w-5 mr-2" /> HostelSummary
-          </Link>
+          {sidebarLinks.map((item, index) => (
+            <Link
+              key={index}
+              to={item.to}
+              className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
+            >
+              <item.icon className="h-5 w-5 mr-2" />
+              {item.label}
+            </Link>
+          ))}
 
-          <Link
-            to="/Allhostels"
-            className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
+          {/* Logout button (not a Link) */}
+          <button
+            onClick={handleLogout}
+            className="btn bg-red-700 mt-3 text-lg font-bold hover:bg-red-500 text-white mx-1 flex items-center px-4 py-2"
           >
-            <PencilIcon className="h-5 w-5 mr-2" /> RoomEdits
-          </Link>
-
-          <Link
-            to="/DocumentVerification"
-            className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
-          >
-            <CheckCircleIcon className="h-5 w-5 mr-2" />
-            Document Verification
-          </Link>
-
-          <Link
-            to="/Search"
-            className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
-          >
-            <SearchIcon className="h-5 w-5 mr-2" />
-            Search Student
-          </Link>
-
-          {/* <Link to="/Changepassword" className="btn btn-outline-white mt-5 bg-yellow-700  hover:bg-yellow-500 text-lg font-bold  btn-outline-white text-white mx-1">
-            <Edit className="h-5 w-5 inline-block -mt-1 mr-1" />
-            Change Password
-          </Link> */}
-          <Link  onClick={handleLogout}
-          className="btn bg-red-700 mt-3 text-lg font-bold  btn-outline-white hover:bg-red-500 text-white mx-1">
-            <LogoutIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
+            <LogoutIcon className="h-5 w-5 mr-2" />
             Logout
-          </Link>
-
+          </button>
         </nav>
       </div>
     </div>
