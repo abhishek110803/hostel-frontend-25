@@ -22,12 +22,10 @@ export default function SelfVerificationTable() {
   const handleCheckboxChange = () => {
     setShowCaptcha(!showCaptcha);
     setIsChecked(!isChecked);
-
   };
   const sendToCaptchaForValidation = (e) => {
     setVerified(e);
   };
-
 
   const { updateSession, session } = useSession();
   const navigate = useNavigate();
@@ -45,6 +43,7 @@ export default function SelfVerificationTable() {
         code: session.code,
         flag: f,
         studentData: studentData,
+        rollno: session?.roll,
       };
 
       //console.log('data to be sent', data);
@@ -66,9 +65,12 @@ export default function SelfVerificationTable() {
         res = await res;
         //console.log('res ka data', res?.data);
         if (res?.data?.status === "success") {
-          updateSession({ stepIndex: 5, self_verification: 1 });
+          updateSession({
+            stepIndex: res?.data?.step,
+            step: res?.data?.step,
+            self_verification: 1,
+          });
         }
-
       } catch (error) {
         console.error("Error revoking request.", error);
         setVerified(false);
@@ -93,7 +95,8 @@ export default function SelfVerificationTable() {
   //self_verification_edit.php
   const getData = async () => {
     const data = {
-      code: session.code,
+      code: session?.code,
+      rollno: session?.roll,
     };
     try {
       let res = axiosInstance.post(`/self_verification.php`, data);
@@ -116,7 +119,7 @@ export default function SelfVerificationTable() {
         delete student.sno;
         delete student.timestamp;
         delete student.uploaded;
-        delete student.self_verified
+        delete student.self_verified;
 
         var doc = res?.data?.documents;
         delete doc.sno;
@@ -125,12 +128,10 @@ export default function SelfVerificationTable() {
         delete doc.rollno;
         delete doc.clerk_verified;
 
-
         //console.log('res ka data', res?.data);
         setStudentData(student);
         setDocuments(res?.data?.documents);
       }
-
     } catch (error) {
       console.error("Error revoking request.", error);
       setVerified(false);
@@ -138,15 +139,12 @@ export default function SelfVerificationTable() {
     }
   };
 
-
-
   const handleEditDoc = () => {
     setVerified(false);
     setShowCaptcha(true);
     setEditingForm(false);
     setIsEditing(true);
-  }
-
+  };
 
   useEffect(() => {
     getData();
@@ -155,43 +153,40 @@ export default function SelfVerificationTable() {
   return (
     <>
       {isEditing ? (
-        editingForm ?
-          (
-            <EditForm
-              studentData={studentData}
-              setStudentData={setStudentData}
-              setIsEditing={setIsEditing}
-            />
-          ) :
-          (
-            <EditDocs
-              setIsEditing={setIsEditing}
-            />
-          )
+        editingForm ? (
+          <EditForm
+            studentData={studentData}
+            setStudentData={setStudentData}
+            setIsEditing={setIsEditing}
+          />
+        ) : (
+          <EditDocs setIsEditing={setIsEditing} />
+        )
       ) : (
-        <> <div className="my-10 mx-auto md:w-2/3">
-          <div className="container w-full py-4">
-
-            <div className="rounded-lg border-blue-600 border-1 shadow-md p-3 md:p-6">
-              <div className="mb-4">
-                <div className="font-bold mx-auto text-lg text-center">
-                  Self Verification
-                </div>
-              </div>
-              <hr className="my-2 border-t border-blue-900" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-                {Object.keys(studentData).map((key) => (
-                  <div key={key} className="mx-4 mb-4 text-left">
-                    <span className="font-bold">
-                      {key
-                        .replace("_", " ")
-                        .replace(/\b\w/g, (l) => l.toUpperCase())}
-                      :
-                    </span>{" "}
-                    {studentData[key]}
+        <>
+          {" "}
+          <div className="my-10 mx-auto md:w-2/3">
+            <div className="container w-full py-4">
+              <div className="rounded-lg border-blue-600 border-1 shadow-md p-3 md:p-6">
+                <div className="mb-4">
+                  <div className="font-bold mx-auto text-lg text-center">
+                    Self Verification
                   </div>
-                ))}
-                {/* {Object.keys(documents).map((key) => (
+                </div>
+                <hr className="my-2 border-t border-blue-900" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                  {Object.keys(studentData).map((key) => (
+                    <div key={key} className="mx-4 mb-4 text-left">
+                      <span className="font-bold">
+                        {key
+                          .replace("_", " ")
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
+                        :
+                      </span>{" "}
+                      {studentData[key]}
+                    </div>
+                  ))}
+                  {/* {Object.keys(documents).map((key) => (
                   <div key={key} className="mb-4">
                     <span className="font-bold w-48">
                       {key
@@ -209,70 +204,80 @@ export default function SelfVerificationTable() {
                     </a>
                   </div>
                 ))} */}
-              </div>
-              <div className="flex justify-center">
-                <button
-                  onClick={handleEdit}
-                  className="mr-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Edit Personal Details
-                </button>
-
-              </div>
-              <div className="flex justify-center flex-col mt-5">
-                <h1 className="text-center text-red-700">If you are not Sure about your documents you can re-upload here.</h1>
-                <button
-                  onClick={handleEditDoc}
-                  className=" px-4 py-2 mx-[38%] w-42 mt-5 rounded bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Re-upload Documents
-                </button>
-              </div>
-              <div className="flex flex-col items-center mt-4">
-                <div className="flex flex-col mt-4">
-                  <div className="flex items-start">
-                    <input
-                      type="checkbox"
-                      id="agreement"
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                      className="mr-3 mt-1 ml-1"
-                    />
-                    <label htmlFor="agreement" className="text-lg">
-                      I hereby confirm that all the details filled and uploaded by me are true and accurate to the best of my knowledge. I understand that providing false or misleading information may result in disciplinary actions, including but not limited to cancellation of hostel allotment, or other administrative penalties as per the institution's policies.
-                    </label>
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    onClick={handleEdit}
+                    className="mr-4 px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    Edit Personal Details
+                  </button>
+                </div>
+                <div className="flex justify-center flex-col mt-5">
+                  <h1 className="text-center text-red-700">
+                    If you are not Sure about your documents you can re-upload
+                    here.
+                  </h1>
+                  <button
+                    onClick={handleEditDoc}
+                    className=" px-4 py-2 mx-[38%] w-42 mt-5 rounded bg-blue-600 text-white hover:bg-blue-700"
+                  >
+                    Re-upload Documents
+                  </button>
+                </div>
+                <div className="flex flex-col items-center mt-4">
+                  <div className="flex flex-col mt-4">
+                    <div className="flex items-start">
+                      <input
+                        type="checkbox"
+                        id="agreement"
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                        className="mr-3 mt-1 ml-1"
+                      />
+                      <label htmlFor="agreement" className="text-lg">
+                        I hereby confirm that all the details filled and
+                        uploaded by me are true and accurate to the best of my
+                        knowledge. I understand that providing false or
+                        misleading information may result in disciplinary
+                        actions, including but not limited to cancellation of
+                        hostel allotment, or other administrative penalties as
+                        per the institution's policies.
+                      </label>
+                    </div>
                   </div>
-                </div>
 
-                <div className="w-1/2 m-auto">
-                  {verified && (
-                    <Alert variant="outlined" sx={{ marginBottom: "10px" }}>
-                      Captcha Validated Successful
-                    </Alert>
-                  )}
-                  {showCaptcha && <Captcha setVerification={sendToCaptchaForValidation} setShowCaptcha={setShowCaptcha} />}
-                </div>
+                  <div className="w-1/2 m-auto">
+                    {verified && (
+                      <Alert variant="outlined" sx={{ marginBottom: "10px" }}>
+                        Captcha Validated Successful
+                      </Alert>
+                    )}
+                    {showCaptcha && (
+                      <Captcha
+                        setVerification={sendToCaptchaForValidation}
+                        setShowCaptcha={setShowCaptcha}
+                      />
+                    )}
+                  </div>
 
-                <button
-                  onClick={handleSubmit}
-                  disabled={!verified}
-                  className={`mt-4 px-4 py-2 rounded ${verified
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-400 text-gray-700 cursor-not-allowed"
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!verified}
+                    className={`mt-4 px-4 py-2 rounded ${
+                      verified
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-400 text-gray-700 cursor-not-allowed"
                     }`}
-                >
-                  Save and Proceed
-                </button>
-
-
+                  >
+                    Save and Proceed
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </>
       )}
-
-
     </>
   );
 }

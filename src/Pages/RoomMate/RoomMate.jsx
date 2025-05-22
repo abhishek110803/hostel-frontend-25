@@ -8,91 +8,93 @@ import axiosInstance from "../../Helper/axiosInstance";
 
 const RoomMate = () => {
   const navigate = useNavigate();
-  const { session, updateSession, getRequest } = useSession();
+  // const { session, updateSession, getRequest } = useSession();
+  const { session, updateSession } = useSession();
 
   const [newStudent, setNewStudent] = useState({ rollNo: "" });
   const [request, setRequest] = useState(null);
   const [roommate, setRoommate] = useState(null);
 
-
-  useEffect(() => {
-    // getRequest();
-    if (session) {
-      setRequest(session?.request);
-      setRoommate(session?.roommate)
-    }
-
-  }, [session]);
-
   // dummy request data
   // const dummyRequest = { sno: 1, rollNo: "21103001", status: "Revoked requested", colorClass: "text-red-500", requester: '12345678' };
 
-  // const getRequest = async () => {
-  //   if (!session) {
-  //     toast.error("Please sign in first");
-  //     navigate("/SignIn");
-  //     return;
-  //   }
+  const getRequest = async () => {
+    if (!session) {
+      toast.error("Please sign in first");
+      navigate("/SignIn");
+      return;
+    }
 
-  //   try {
-  //     let res = axiosInstance.post('/get_roommate.php', { rollno: session?.roll });
-  //     await toast.promise(res, {
-  //       loading: "Fetching data.",
-  //       success: (data) => {
-  //         ////console.log(data?.data);
-  //         return data?.data?.message;
-  //       },
-  //       error: (data) => {
-  //         ////console.log(data?.response?.data);
-  //         return data?.response?.data.message;
-  //       },
-  //     });
-  //     res = await res;
-  //    //console.log('res ka data', res?.data);
-  //     if (res?.data?.status === "success") {
-  //       if (res?.data?.flag !== '1') {
-  //         setRoommate((await res)?.data?.roommate);
+    try {
+      let res = axiosInstance.post("/get_roommate.php", {
+        rollno: session?.roll,
+      });
+      await toast.promise(res, {
+        loading: "Fetching data.",
+        success: (data) => {
+          ////console.log(data?.data);
+          return data?.data?.message;
+        },
+        error: (data) => {
+          ////console.log(data?.response?.data);
+          return data?.response?.data.message;
+        },
+      });
+      res = await res;
+      //console.log('res ka data', res?.data);
+      if (res?.data?.status === "success") {
+        if (res?.data?.flag !== "1") {
+          setRoommate((await res)?.data?.roommate);
 
-  //         const newRequest = {
-  //           rollNo: res?.data?.roommate?.rollno,
-  //           email: res?.data?.roommate?.email,
-  //           status: res?.data?.request_status,
-  //           requester: res?.data?.requester,
-  //         };
+          const newRequest = {
+            rollNo: res?.data?.roommate?.rollno,
+            email: res?.data?.roommate?.email,
+            status: res?.data?.request_status,
+            requester: res?.data?.requester,
+          };
 
-  //         setRequest(newRequest);
+          setRequest(newRequest);
 
-  //         if (res?.data?.revoke_details?.revoke_requester === session.roll) {
-  //           setRequest((prevRequest) => ({
-  //             ...prevRequest,
-  //             status: "Requested for revoke",
-  //           }));
-  //         } else if (res?.data?.revoke_details?.revoke_accepter === session.roll) {
-  //           setRequest((prevRequest) => ({
-  //             ...prevRequest,
-  //             status: "Revoked requested",
-  //           }));
-  //         }
+          if (res?.data?.revoke_details?.revoke_requester === session.roll) {
+            setRequest((prevRequest) => ({
+              ...prevRequest,
+              status: "Requested for revoke",
+            }));
+          } else if (
+            res?.data?.revoke_details?.revoke_accepter === session.roll
+          ) {
+            setRequest((prevRequest) => ({
+              ...prevRequest,
+              status: "Revoked requested",
+            }));
+          }
 
-  //        //console.log('my request', newRequest);
+          //console.log('my request', newRequest);
 
-  //         if (newRequest.status === "Accepted") {
-  //          //console.log('hiihihi')
-  //           updateSession({ stepIndex: 3, roommate_select: 1 });
-  //          //console.log('session is', session);
-  //           // updateSession({ roommate_select: 1 });
-  //         }
-  //       } else {
-  //         setRequest(null);
-  //         setRoommate(null);
-  //       }
+          if (newRequest.status === "Accepted") {
+            //console.log('hiihihi')
+            if (session?.step !== res?.data?.step)
+              updateSession({ step: res?.data?.step, roommate_select: 1 });
+            //console.log('session is', session);
+            // updateSession({ roommate_select: 1 });
+          }
+        } else {
+          setRequest(null);
+          setRoommate(null);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching data.", error);
+    }
+  };
 
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data.", error);
-  //   }
-  // };
-
+  useEffect(() => {
+    getRequest();
+    if (session) {
+      setRequest(session?.request);
+      setRoommate(session?.roommate);
+    }
+  }, [session]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -113,24 +115,23 @@ const RoomMate = () => {
       await toast.promise(res, {
         loading: "Registering your request.",
         success: (data) => {
-         //console.log(data?.data);
+          //console.log(data?.data);
           return data?.data?.message;
         },
         error: (data) => {
-         //console.log(data);
+          //console.log(data);
           return data?.response?.data.message;
         },
       });
 
       res = await res;
 
-     //console.log('yy:', res.data)
+      //console.log('yy:', res.data)
 
       if (res?.data?.status === "success") {
         setNewStudent({ rollNo: "" });
         getRequest();
       }
-
     } catch (error) {
       console.error("Error sending request.", error);
     }
@@ -149,11 +150,11 @@ const RoomMate = () => {
       await toast.promise(res, {
         loading: "Registering your request.",
         success: (data) => {
-         //console.log(data?.data);
+          //console.log(data?.data);
           return data?.data?.message;
         },
         error: (data) => {
-         //console.log(data);
+          //console.log(data);
           return data?.response?.data.message;
         },
       });
@@ -162,10 +163,9 @@ const RoomMate = () => {
         setRequest(null);
         setRoommate(null);
         getRequest();
-        updateSession({ stepIndex: 3 });
+        updateSession({ stepIndex: 3, step: res?.data?.step });
         updateSession({ roommate_select: 0 });
       }
-
     } catch (error) {
       console.error("Error revoking request.", error);
     }
@@ -178,17 +178,17 @@ const RoomMate = () => {
       requested_rollno: session.roll,
     };
 
-   //console.log('datda-akdjfbas', data);
+    //console.log('datda-akdjfbas', data);
     try {
       let res = axiosInstance.post(`/accept_revokeRequest.php`, data);
       await toast.promise(res, {
         loading: "Registering your request.",
         success: (data) => {
-         //console.log(data?.data);
+          //console.log(data?.data);
           return data?.data?.message;
         },
         error: (data) => {
-         //console.log(data);
+          //console.log(data);
           return data?.response?.data.message;
         },
       });
@@ -197,10 +197,9 @@ const RoomMate = () => {
         setRequest(null);
         setRoommate(null);
         getRequest();
-        updateSession({ stepIndex: 3 });
+        updateSession({ stepIndex: 5.3, step: res?.data?.step });
         updateSession({ roommate_select: 0 });
       }
-
     } catch (error) {
       console.error("Error revoking request.", error);
     }
@@ -213,60 +212,67 @@ const RoomMate = () => {
     );
     if (userConfirmed) {
       try {
-        let res = axiosInstance.post(`/accept_roommate.php`, { rollno: session.roll });
+        let res = axiosInstance.post(`/accept_roommate.php`, {
+          rollno: session.roll,
+          requester: request?.requester,
+        });
         await toast.promise(res, {
           loading: "Registering your request.",
           success: (data) => {
-           //console.log(data?.data);
+            //console.log(data?.data);
             return data?.data?.message;
           },
           error: (data) => {
-           //console.log(data);
+            //console.log(data);
             return data?.response?.data.message;
           },
         });
 
         res = await res;
 
-       //console.log('ahbfadf', res?.data);
+        //console.log('ahbfadf', res?.data);
 
         if (res?.data?.status === "success") {
           setRequest(null);
           setRoommate(null);
           getRequest();
-          updateSession({ stepIndex: 4, roommate_select: 1 });
-          navigate('/Allotment')
+          updateSession({
+            stepIndex: 4,
+            step: res?.data?.step,
+            roommate_select: 1,
+          });
+          navigate("/Allotment");
         }
-
       } catch (error) {
         console.error("Error accepting request.", error);
       }
     } else {
       toast("Please review and update your roommate request if needed.");
     }
-
   };
 
   const handleRejectRequest = async () => {
     try {
-      let res = axiosInstance.post(`/reject_roommate.php`, { rollno: session.roll });
+      let res = axiosInstance.post(`/reject_roommate.php`, {
+        rollno: session.roll,
+      });
       await toast.promise(res, {
         loading: "Registering your request.",
         success: (data) => {
-         //console.log(data?.data);
+          //console.log(data?.data);
           return data?.data?.message;
         },
         error: (data) => {
-         //console.log(data);
+          //console.log(data);
           return data?.response?.data.message;
         },
       });
       res = await res;
-     //console.log('apna data', res?.data)
+      //console.log('apna data', res?.data)
       if (res?.data?.status === "success") {
         getRequest();
       } else {
-       //console.log('sdhbfhsidbhbshdb')
+        //console.log('sdhbfhsidbhbshdb')
       }
     } catch (error) {
       console.error("Error rejecting request.", error);
@@ -294,7 +300,6 @@ const RoomMate = () => {
     handleAddStudent();
   };
 
-
   const handleInputBlur = () => {
     if (error && newStudent.rollNo && /^\d{8}$/.test(newStudent.rollNo)) {
       setError("");
@@ -314,21 +319,24 @@ const RoomMate = () => {
         >
           <ArrowLeftIcon className="h-6 w-6" />
         </button> */}
-        <h1 className="text-2xl font-bold mb-4 text-center">RoomMate Details</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          RoomMate Details
+        </h1>
 
-        {(request === null) ? (
-
-
+        {request === null ? (
           <div className="w-full md:w-1/2 mb-4 md:mb-0 p-2 mx-auto">
             <div className="mb-4 text-center">
               <div className="p-4 border-1 border-gray-300 rounded-md shadow-lg max-w-md mx-auto bg-white">
-                <h2 className="text-xl font-bold mb-4">Enter roommates roll number to invite</h2>
-                <form onSubmit={(e) => { e.preventDefault() }} method="POST">
+                <h2 className="text-xl font-bold mb-4">
+                  Enter roommates roll number to invite
+                </h2>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                  }}
+                  method="POST"
+                >
                   <div className="grid grid-cols-1 gap-2 sm:gap-4">
-                   
-
-
-                   
                     <input
                       type="text"
                       name="rollNo"
@@ -339,11 +347,10 @@ const RoomMate = () => {
                       className="p-3 border border-gray-300 rounded w-full focus:outline-none focus:border-blue-500 text-sm sm:text-base"
                     />
 
-
-                     
-
                     {error && (
-                      <p className="text-red-500 text-xs sm:text-sm italic">{error}</p>
+                      <p className="text-red-500 text-xs sm:text-sm italic">
+                        {error}
+                      </p>
                     )}
                     <button
                       onClick={handleAddClick}
@@ -357,46 +364,43 @@ const RoomMate = () => {
               </div>
             </div>
           </div>
-
-
         ) : (
-
-
           <div className="flex flex-wrap -mx-2">
             <div className="w-full md:w-1/2 p-2">
               <div className="bg-white rounded-lg p-6 shadow-md">
                 <h2 className="text-lg font-bold mb-2">Request</h2>
                 <p className="mb-2">Roll No: {request?.rollNo}</p>
-                <p className={`mb-4 ${request?.colorClass}`}>Status: {request?.status}</p>
+                <p className={`mb-4 ${request?.colorClass}`}>
+                  Status: {request?.status}
+                </p>
                 <div className="flex space-x-2">
-
-
-                  {request?.status === "Pending" && ((request.requester === session.roll) ? ( //means he is the sender
-                    <>
-                      <button
-                        onClick={() => handleRevokeRequest()}
-                        className="bg-red-500 text-white px-4 py-2 rounded"
-                      >
-                        Revoke
-                      </button>
-                    </>
-                  ) : (<>
-                    {/* means current student is receiver */}
-                    <button
-                      onClick={(event) => handleAcceptRequest(event)}
-                      className="bg-green-500 text-white px-4 py-2 rounded"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleRejectRequest()}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded"
-                    >
-                      Reject
-                    </button>
-                  </>))}
-
-
+                  {request?.status === "Pending" &&
+                    (request.requester === session.roll ? ( //means he is the sender
+                      <>
+                        <button
+                          onClick={() => handleRevokeRequest()}
+                          className="bg-red-500 text-white px-4 py-2 rounded"
+                        >
+                          Revoke
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {/* means current student is receiver */}
+                        <button
+                          onClick={(event) => handleAcceptRequest(event)}
+                          className="bg-green-500 text-white px-4 py-2 rounded"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() => handleRejectRequest()}
+                          className="bg-yellow-500 text-white px-4 py-2 rounded"
+                        >
+                          Reject
+                        </button>
+                      </>
+                    ))}
 
                   {request?.status === "Accepted" && (
                     <button
@@ -406,9 +410,6 @@ const RoomMate = () => {
                       Revoke
                     </button>
                   )}
-
-
-
 
                   {request?.status === "Revoked requested" && (
                     <button
@@ -421,11 +422,9 @@ const RoomMate = () => {
                 </div>
               </div>
             </div>
-          </div >
-
-
+          </div>
         )}
-      </div >
+      </div>
     </>
   );
 };

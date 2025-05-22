@@ -43,7 +43,6 @@ const DocumentUpload = () => {
     setVerified(e);
   };
 
-
   const handleFileChange = (event) => {
     const { name, files } = event.target;
     if (files.length > 0 && files[0].size > 500000) {
@@ -63,12 +62,12 @@ const DocumentUpload = () => {
   const { updateSession, session } = useSession();
 
   const sendForm = async () => {
-    formData.set("code", session?.code);
+    formData.set("rollno", session?.roll);
 
     // Debugging logs: Log all form data
     //console.log('Form data:');
     for (let [key, value] of formData.entries()) {
-      //console.log(`${key}:`, value);
+      console.log(`${key}:`, value);
     }
 
     try {
@@ -77,13 +76,13 @@ const DocumentUpload = () => {
       await toast.promise(res, {
         loading: "Submitting.",
         success: (data) => {
-          console.log('Success response data:', data);
+          console.log("Success response data:", data);
           return data?.data?.message;
         },
         error: (data) => {
           setVerified(false);
           setShowCaptcha(true);
-          console.log('Error response data:', data);
+          console.log("Error response data:", data);
           return data?.response?.data.message;
         },
       });
@@ -92,7 +91,7 @@ const DocumentUpload = () => {
       //console.log('Response after toast promise:', res?.data);
 
       if (res?.data?.status === "success") {
-        updateSession({ stepIndex: 4,step:res?.data?.step });
+        updateSession({ stepIndex: 4, step: res?.data?.step });
         // navigate("/RoomMate");
       }
     } catch (error) {
@@ -115,9 +114,7 @@ const DocumentUpload = () => {
             </>
         } */}
 
-
-        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar />}
-
+        {session?.sem === "1" ? <FirstYear /> : <StepProcessBar />}
       </div>
       <div className="flex justify-center align-center mb-2">
         <section className="bg-white w-full lg:w-2/3 h-full">
@@ -151,7 +148,6 @@ const DocumentUpload = () => {
                             accept=".pdf"
                             className="bg-white border mb-2 border-red-500 text-blue-900 sm:text-m rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                             onChange={handleFileChange}
-
                           />
                           {fileURLs.hostelReceipt && (
                             <a
@@ -186,7 +182,6 @@ const DocumentUpload = () => {
                             accept=".pdf"
                             className="bg-white border mb-2 border-red-500 text-blue-900 sm:text-m rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
                             onChange={handleFileChange}
-                            
                           />
                           {fileURLs.messAdvance && (
                             <a
@@ -279,19 +274,26 @@ const DocumentUpload = () => {
                           Captcha Validated Successful
                         </Alert>
                       )}
-                      {showCaptcha && <Captcha setVerification={sendToCaptchaForValidation} setShowCaptcha={setShowCaptcha} />}
+                      {showCaptcha && (
+                        <Captcha
+                          setVerification={sendToCaptchaForValidation}
+                          setShowCaptcha={setShowCaptcha}
+                        />
+                      )}
                     </div>
 
                     <div className="flex items-center justify-center mt-6">
                       <button
                         type="submit"
-                        className={` ${verified ? "bg-blue-700 text-white" : "bg-blue-400 text-black"
-                          } items-center justify-center w-full md:w-1/3 py-3 px-4 border rounded-md focus:ring-2 focus:ring-offset-1 border-red-500 hover:border-blue-400 focus:ring-blue-400`}
-                          disabled={!verified}>
+                        className={` ${
+                          verified
+                            ? "bg-blue-700 text-white"
+                            : "bg-blue-400 text-black"
+                        } items-center justify-center w-full md:w-1/3 py-3 px-4 border rounded-md focus:ring-2 focus:ring-offset-1 border-red-500 hover:border-blue-400 focus:ring-blue-400`}
+                        disabled={!verified}
+                      >
                         Save & Proceed
                       </button>
-
-
                     </div>
                   </form>
                 </div>

@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 const FirstYearProcessBar = () => {
   const navigate = useNavigate();
 
-
   /**
    * 
    * 
@@ -29,7 +28,7 @@ const FirstYearProcessBar = () => {
     { name: "Application Form", href: "/RegistrationForm" }, //2
     { name: "Upload Documents", href: "/DocumentUpload" }, //3
     { name: "Self Verification", href: "/SelfVerification" }, //4
-    { name: "Room Booking", href: "/Allotment" }, //5.2
+    { name: "Room Booking", href: "/Allotment" }, //5.3
     { name: "Confirmation Page", href: "/confirmationPage" }, //6
   ];
 
@@ -54,9 +53,9 @@ const FirstYearProcessBar = () => {
       }
     } else {
       toast.error("Please login first");
-      navigate('/');
+      navigate("/");
     }
-  }, [session?.stepIndex, location.pathname, steps])
+  }, [session?.stepIndex, location.pathname, steps]);
 
   return (
     <div className="container mx-auto mt-5">
@@ -85,7 +84,7 @@ const FirstYearProcessBar = () => {
         </Steps>
       </div>
     </div>
-  )
+  );
 };
 
 export default FirstYearProcessBar;

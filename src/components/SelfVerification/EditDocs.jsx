@@ -3,10 +3,9 @@ import axiosInstance from "../../Helper/axiosInstance";
 import toast from "react-hot-toast";
 import { useSession } from "../../components/ProtectedPath/SessionContext";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
+import { Flag } from "lucide-react";
 
-const EditDocs = ({
-  setIsEditing,
-}) => {
+const EditDocs = ({ setIsEditing }) => {
   const [formData, setFormData] = useState(new FormData());
   const [fileURLs, setFileURLs] = useState({
     hostelReceipt: null,
@@ -27,7 +26,6 @@ const EditDocs = ({
     }
   };
 
-
   const handleFileChange = (event) => {
     const { name, files } = event.target;
     if (files.length > 0 && files[0].size > 500000) {
@@ -45,7 +43,7 @@ const EditDocs = ({
   const { session } = useSession();
 
   const sendForm = async () => {
-    formData.set('code', session.code);
+    formData.set("code", session.code);
 
     try {
       let res = axiosInstance.post(`/upload_doc_insert.php`, formData);
@@ -53,11 +51,11 @@ const EditDocs = ({
       await toast.promise(res, {
         loading: "Updating.",
         success: (data) => {
-          console.log('Success response data:', data);
+          console.log("Success response data:", data);
           return data?.data?.message;
         },
         error: (data) => {
-          console.log('Error response data:', data);
+          console.log("Error response data:", data);
           return data?.response?.data.message;
         },
       });
@@ -68,34 +66,27 @@ const EditDocs = ({
       if (res?.data?.status === "success") {
         setIsEditing(false);
       }
-
     } catch (error) {
       console.error("Error uploading form:", error);
     }
   };
 
-
   return (
     <>
-
       <div className="flex justify-center align-center mb-2">
-
         <section className="bg-white w-full lg:w-2/3 h-full">
-
           <div className="flex items-center justify-center px-2 py-4 mt-4 md:h-screen lg:py-0">
             <div className="w-full">
-
               <h1 className="text-xl font-bold leading-tight tracking-tight text-blue-600 md:text-2xl ml-4 mb-4 text-center">
                 Please Upload the all again:
               </h1>
               <div className="rounded-lg shadow-2xl border-2 border-blue-600 bg-gray-100 p-6">
                 <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                   <button
-                  
                     className=" text-blue-600 hover:text-blue-800 focus:outline-none"
+                    onClick={() => setIsEditing(false)}
                   >
                     <ArrowLeftIcon className="h-6 w-6" />
-                    
                   </button>
 
                   <form
@@ -252,10 +243,7 @@ const EditDocs = ({
                         Save & Update
                       </button>
                     </div>
-
                   </form>
-
-
                 </div>
               </div>
             </div>
