@@ -29,8 +29,8 @@ const RegistrationForm = () => {
     blood_group: "",
 
     email: '',
-    year: (parseInt(session?.sem)+1)/2,
-    course: session?.course,
+    year: (parseInt(session?.sem) + 1) / 2,
+    course: (session?.course) ? session?.course : '',
     sem: session?.sem,
     self_mobile: "",
     father_mobile: "",
@@ -175,10 +175,11 @@ const RegistrationForm = () => {
   };
 
   const sendForm = async () => {
-    console.log('form data',formData);
+    console.log('form data', formData);
     delete formData.application_id;
     try {
-      let res = axiosInstance.post(`/application_form_insert.php`, formData);
+      let url = (session?.sem === "1") ? `/first_year_application_form_insert.php` : `/application_form_insert.php`;
+      let res = axiosInstance.post(url, formData);
       await toast.promise(res, {
         loading: "Submitting Form.",
         success: (data) => {
@@ -193,10 +194,15 @@ const RegistrationForm = () => {
         },
       });
       res = await res;
+      console.log('data-12456', res.data)
+      if (res?.data?.step) {
+        updateSession({ stepIndex: 3, step: res?.data?.step });
+      }
+
       //console.log(res?.data?.status === "success");
       if (res?.data?.status === "success") {
         // setSession(res.data.user);
-        updateSession({ stepIndex: 3, step: res?.data?.step});
+        updateSession({ stepIndex: 3, step: res?.data?.step });
         navigate("/DocumentUpload");
       }
     } catch (error) {
@@ -230,7 +236,7 @@ const RegistrationForm = () => {
             </>
         } */}
 
-        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar/>}
+        {(session?.sem === '1') ? <FirstYear /> : <StepProcessBar />}
 
       </div>
       <div className="flex justify-center align-center  md:h-min-screen md:py-8 md:px-4 md:lt-sm:mt-0">
@@ -501,7 +507,7 @@ const RegistrationForm = () => {
                           onChange={handleChange}
                           className={`bg-blue-50 border ${errors.course ? "border-red-300" : "border-blue-300"
                             } sm:text-sm rounded-lg focus:ring-primary-400 focus:border-primary-400 block w-full p-2.5 bg-blue-200 border-blue-400 placeholder-gray-800 text-black focus:ring-blue-300 focus:border-blue-300`}
-                        disabled
+                          disabled={!!session?.course}
                         >
                           <option value="">SELECT</option>
                           <option value="btech">B.Tech</option>
@@ -589,7 +595,7 @@ const RegistrationForm = () => {
                     <div className="flex flex-wrap -mx-2">
                       <div className="w-full sm:w-1/2 px-2 min-w-[210px]">
                         <label className="block mb-2 mt-4 text-sm font-medium text-black">
-                        EMAIL ID
+                          EMAIL ID
                           <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -601,7 +607,7 @@ const RegistrationForm = () => {
                           className={`bg-blue-50 border ${errors.email ? "border-red-300" : "border-blue-300"
                             } sm:text-sm rounded-lg focus:ring-primary-400 focus:border-primary-400 block w-full p-2.5 bg-blue-200 border-blue-400 placeholder-black text-black focus:ring-blue-300 focus:border-blue-300`}
                           placeholder="example"
-                          // disabled
+                        // disabled
                         />
                         {/* {errors.email && (
                           <div className="text-sm text-red-400 mt-2">

@@ -15,10 +15,30 @@ export const SessionProvider = ({ children }) => {
   );
 
   const updateSession = (newData) => {
+    if (!session) {
+      // First-time session init
+      setSession(newData);
+      localStorage.setItem("session5", JSON.stringify(newData));
+      return;
+    }
+
+    let hasChanged = false;
+
+    for (const key in newData) {
+      if (!(key in session) || session[key] !== newData[key]) {
+        hasChanged = true;
+        break;
+      }
+    }
+
+    if (!hasChanged) return;
+
     const updatedSession = { ...session, ...newData };
-    setSession((data) => ({ ...data, ...newData }));
+    setSession(updatedSession);
     localStorage.setItem("session5", JSON.stringify(updatedSession));
   };
+
+
 
   const navigate = useNavigate();
 
@@ -170,7 +190,7 @@ export const SessionProvider = ({ children }) => {
       { stepNumber: 3, name: "Upload Documents", href: "/DocumentUpload" },
       { stepNumber: 4, name: "Self Verification", href: "/SelfVerification" },
       { stepNumber: 5.1, name: "Room-mate Selection", href: "/RoomMate" },
-      //5.2 is for when roommate is selected, and both are aggreed.
+      //5.2 is for when roommate is selected, and both are agreed.
       { stepNumber: 5.2, name: "Room Booking", href: "/Allotment" },
       { stepNumber: 6, name: "Confirmation Page", href: "/confirmationPage" },
     ];
@@ -180,16 +200,19 @@ export const SessionProvider = ({ children }) => {
     const allowedPaths = stepsArray.map((step) => step.href);
 
     const matchedStep = stepsArray.find(
-      (step) => step.stepNumber === session.step
+      (step) => step.stepNumber === parseFloat(session?.step)
     );
+    // console.log('matched ;',matchedStep)
 
     if (matchedStep) {
       if (allowedPaths.includes(location.pathname)) {
         if (
-          location.pathname !== matchedStep.href &&
-          !(session?.step === 5.2 && location.pathname === "/RoomMate")
+          (location.pathname !== matchedStep.href) &&
+          !((session?.step === 5.2) && (location.pathname === "/RoomMate"))
         ) {
           navigate(matchedStep.href);
+        } else {
+          console.log(location.pathname,matchedStep )
         }
       }
     }

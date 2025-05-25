@@ -73,9 +73,12 @@ function JustifiedExample() {
 
   const getRoomData = async () => {
     try {
-      let res = axiosInstance.post(`/get_room_details.php`, {
+      let url = (session?.sem === '1') ? `/first_year_get_room_details.php` : `/get_room_details.php`;
+
+      let res = axiosInstance.post(url, {
         code: session.code,
         rollno: session?.roll,
+        application_id: session?.application_id,
       });
       await toast.promise(res, {
         loading: "Fetching rooms for you.",

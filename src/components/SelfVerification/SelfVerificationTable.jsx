@@ -48,7 +48,9 @@ export default function SelfVerificationTable() {
 
       //console.log('data to be sent', data);
       try {
-        let res = axiosInstance.post(`/self_verification_edit.php`, data);
+        let url = (session?.sem === '1') ? `/first_year_self_verification_edit.php` : `/self_verification_edit.php`;
+
+        let res = axiosInstance.post(url, data);
         await toast.promise(res, {
           loading: "Submitting...",
           success: (data) => {
@@ -99,7 +101,9 @@ export default function SelfVerificationTable() {
       rollno: session?.roll,
     };
     try {
-      let res = axiosInstance.post(`/self_verification.php`, data);
+      let url = (session?.sem === '1') ? `/first_year_self_verification.php` : `/self_verification.php`;
+
+      let res = axiosInstance.post(url, data);
       await toast.promise(res, {
         loading: "Loading...",
         success: (data) => {
@@ -131,6 +135,9 @@ export default function SelfVerificationTable() {
         //console.log('res ka data', res?.data);
         setStudentData(student);
         setDocuments(res?.data?.documents);
+        if (res?.data?.step && (session?.step != res?.data?.step)) {
+          updateSession({ step: res?.data?.step });
+        }
       }
     } catch (error) {
       console.error("Error revoking request.", error);

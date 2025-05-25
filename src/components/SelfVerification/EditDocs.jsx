@@ -44,9 +44,12 @@ const EditDocs = ({ setIsEditing }) => {
 
   const sendForm = async () => {
     formData.set("code", session.code);
+    formData.set("application_id", session?.application_id);
 
     try {
-      let res = axiosInstance.post(`/upload_doc_insert.php`, formData);
+      let url = (session?.sem === '1') ? `/first_year_upload_doc_insert.php` : `/upload_doc_insert.php`;
+
+      let res = axiosInstance.post(url, formData);
 
       await toast.promise(res, {
         loading: "Updating.",

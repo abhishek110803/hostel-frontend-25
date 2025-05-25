@@ -38,7 +38,7 @@ const Changepassword = () => {
     };
 
     try {
-      let res = axiosInstance.post(`/change_password.php`, data);
+      let res = axiosInstance.post(`/first_year_change_password.php`, data);
 
       await toast.promise(res, {
         loading: "Changing you password...",

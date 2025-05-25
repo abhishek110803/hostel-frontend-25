@@ -120,7 +120,8 @@ export default function EditForm({
   };
 
   const sendForm = async () => {
-    documentData.set('rollno', formData.rollno);
+    documentData.set('rollno', formData?.rollno);
+    documentData.set('application_id', formData?.application_id);
 
     // Debugging logs: Log all form data
     //console.log('Form data:');
@@ -129,7 +130,9 @@ export default function EditForm({
     // }
 
     try {
-      let res = axiosInstance.post(`/upload_doc_insert.php`, documentData);
+      let url = (session?.sem === '1') ? `/first_year_upload_doc_insert.php` : `/upload_doc_insert.php`;
+
+      let res = axiosInstance.post(url, documentData);
 
       await toast.promise(res, {
         loading: "Updating documents",

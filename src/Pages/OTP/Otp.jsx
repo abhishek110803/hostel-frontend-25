@@ -177,10 +177,11 @@ const Otp = () => {
     const verifyOTP = async () => {
         const data = {
             otp,
-            code: session?.code
+            code: session?.code,
+            mobile_number: mobileNo
         }
         try {
-            let res = axiosInstance.post(`/otp_verify.php`, data);
+            let res = axiosInstance.post(`/first_year_otp_verify.php`, data);
             await toast.promise(res, {
                 loading: "Verifying OTP.",
                 success: (data) => {
@@ -208,7 +209,7 @@ const Otp = () => {
             code: session?.code
         }
         try {
-            let res = axiosInstance.post(`/send_otp.php`, data);
+            let res = axiosInstance.post(`/first_year_send_otp.php`, data);
             await toast.promise(res, {
                 loading: "Sending OTP.",
                 success: (data) => {
