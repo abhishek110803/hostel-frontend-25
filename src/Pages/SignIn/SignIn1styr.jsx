@@ -309,6 +309,8 @@ const UnifiedSignIn = () => {
           session.role = "user";
           session.stepIndex =
             session.password_changed + session.mobile_verified;
+          session.step = Number(res.data.step);
+
           // session.course = matches[1] || null;
           session.sem = '1';
           updateSession(session);

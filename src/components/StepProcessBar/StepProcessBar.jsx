@@ -7,17 +7,32 @@ import toast from "react-hot-toast";
 
 const StepProcessBar = () => {
   const navigate = useNavigate();
-  const { session } = useSession();
+  const { session, details } = useSession();  // <-- get details here
   const location = useLocation();
 
-  const steps = [
+  // Extract setting_value for single_room_booking_for_4th_year from details
+  const singleRoomBookingFor4thYear =
+    details?.status === "success"
+      ? details.data.find(
+        (setting) => setting.setting_key === "single_room_booking_for_4th_year"
+      )?.setting_value
+      : 0;
+
+  // Original steps array
+  const allSteps = [
     { stepNumber: 2, name: "Application Form", href: "/RegistrationForm" },
     { stepNumber: 3, name: "Upload Documents", href: "/DocumentUpload" },
     { stepNumber: 4, name: "Self Verification", href: "/SelfVerification" },
-    { stepNumber: 5.1, name: "Room-mate Selection", href: "/RoomMate" }, //5.2 is for when roommate is selected, and both are aggreed.
+    { stepNumber: 5.1, name: "Room-mate Selection", href: "/RoomMate" },
     { stepNumber: 5.2, name: "Room Booking", href: "/Allotment" },
     { stepNumber: 6, name: "Confirmation Page", href: "/confirmationPage" },
   ];
+
+  // If setting_value is 1, remove Room-mate Selection (stepNumber 5.1)
+  const steps =
+    singleRoomBookingFor4thYear === 1
+      ? allSteps.filter((step) => step.stepNumber !== 5.1)
+      : allSteps;
 
   const [currentStep, setCurrentStep] = useState(
     steps.findIndex((step) => step.href === location.pathname)
@@ -25,11 +40,7 @@ const StepProcessBar = () => {
 
   const handleStepClick = (index, href, stepNumber) => {
     if (parseInt(session?.step) >= 5) {
-      console.log(stepNumber);
       if ([5.1, 5.2].includes(stepNumber) && stepNumber <= session?.step) {
-        // if (stepNumber === session?.step) {
-        //   return toast.error("You are on same step.");
-        // }
         setCurrentStep(index);
         navigate(href);
       } else {
@@ -39,7 +50,6 @@ const StepProcessBar = () => {
     }
 
     if (stepNumber != session.stepIndex) {
-      console.log(session.stepIndex);
       return toast.error("Complete all steps in order.");
     }
 
@@ -60,7 +70,7 @@ const StepProcessBar = () => {
         navigate(foundStep.href);
       }
     }
-  }, [session?.stepIndex]);
+  }, [session?.stepIndex, steps]);
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -80,7 +90,7 @@ const StepProcessBar = () => {
         navigate(sessionStep.href);
       }
     }
-  }, [location.pathname, session?.stepIndex]);
+  }, [location.pathname, session?.stepIndex, steps]);
 
   useEffect(() => {
     if (session?.stepIndex > 1 && currentStep >= 0 && currentStep <= 1) {
@@ -91,11 +101,10 @@ const StepProcessBar = () => {
         navigate(sessionStep.href);
       }
     }
-  }, [currentStep, session?.stepIndex]);
+  }, [currentStep, session?.stepIndex, steps]);
 
-  return session?.isSingle !== true ? (
+  return (
     <div className="container mx-auto mt-5">
-      {/* Horizontal Steps for larger screens */}
       <div className="hidden md:block">
         <Steps current={currentStep}>
           {steps.map((step, index) => (
@@ -107,7 +116,6 @@ const StepProcessBar = () => {
           ))}
         </Steps>
       </div>
-      {/* Vertical Steps for smaller screens */}
       <div className="block md:hidden">
         <Steps current={currentStep} vertical>
           {steps.map((step, index) => (
@@ -120,9 +128,7 @@ const StepProcessBar = () => {
         </Steps>
       </div>
     </div>
-  ) : (
-    <></>
-  );
+  )
 };
 
 export default StepProcessBar;

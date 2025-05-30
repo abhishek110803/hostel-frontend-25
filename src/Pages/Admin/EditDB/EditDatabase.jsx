@@ -196,21 +196,25 @@ export default function EditDatabase() {
   useEffect(() => {
     const getData = async () => {
       const response = await axiosInstance.get("/get_tables_columns.php");
+      console.log('responce ka data hun', response.data.data)
       setData(response.data.data);
     };
     getData();
   }, []);
   return (
-    <div className="flex">
-      <AdminSidebar />
-      <div className="w-full min-h-full p-6 border border-gray-300 bg-gray-100 flex flex-col gap-2">
+    <div className="flex min-h-screen">
+      <div className="w-64 border-r border-gray-300 bg-white">
+        <AdminSidebar />
+      </div>
+      <div className="flex-grow p-6 bg-gray-100 flex flex-col gap-4 overflow-x-auto">
+
         <h1 className="text-xl font-bold">Edit Database</h1>
         <select
           className="w-full p-2 rounded border border-gray-300"
           onChange={handleTableChange}
         >
           <option value="">Select a Table</option>
-          {[...new Set(data.map((item) => item.table_name))].map(
+          {[...new Set(data.map((item) => item.TABLE_NAME))].map(
             (table, idx) => (
               <option key={idx} value={table}>
                 {table}

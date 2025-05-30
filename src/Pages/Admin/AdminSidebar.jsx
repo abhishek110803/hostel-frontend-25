@@ -19,7 +19,6 @@ function AdminSidebar() {
     logout();
   };
 
-  // Sidebar links array
   const sidebarLinks = [
     {
       to: "/HostelSummary",
@@ -69,24 +68,23 @@ function AdminSidebar() {
   ];
 
   return (
-    <div className="bg-gray-100 shadow-md w-[20%] sticky top-0 h-[1300px]">
+    <div className="bg-gray-100 shadow-md w-64 min-w-[250px] sticky top-0 h-screen overflow-y-auto md:block hidden">
       <div className="p-4">
-        <nav className="flex flex-col">
+        <nav className="flex flex-col gap-1">
           {sidebarLinks.map((item, index) => (
             <Link
               key={index}
               to={item.to}
-              className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
+              className="py-2 px-4 flex items-center hover:bg-gray-200 rounded-md text-gray-700"
             >
-              <item.icon className="h-5 w-5 mr-2" />
-              {item.label}
+              <item.icon className="h-5 w-5 mr-3" />
+              <span className="text-sm font-medium">{item.label}</span>
             </Link>
           ))}
 
-          {/* Logout button (not a Link) */}
           <button
             onClick={handleLogout}
-            className="btn bg-red-700 mt-3 text-lg font-bold hover:bg-red-500 text-white mx-1 flex items-center px-4 py-2"
+            className="mt-4 bg-red-600 hover:bg-red-500 text-white font-semibold flex items-center px-4 py-2 rounded-md"
           >
             <LogoutIcon className="h-5 w-5 mr-2" />
             Logout
