@@ -138,9 +138,12 @@ function JustifiedExample() {
     //console.log('hhhsbdhshdfhgsdhfhsdfsfsd', sem, course, gender);
   }, [fetchedData]);
 
-  // Function to update the state with backend data
-  const updateRoomData = (state, setState, backendData) => {
+  const [hostelAvailabilityMap, setHostelAvailabilityMap] = useState({});
+
+  const updateRoomData = (hostelName, state, setState, backendData) => {
     const newState = { ...state };
+    let isAnyRoomAvailable = false;
+
     for (const floor in newState) {
       for (const wing in newState[floor]) {
         newState[floor][wing] = newState[floor][wing].map((room) => {
@@ -148,9 +151,12 @@ function JustifiedExample() {
             (data) => data.roomId === room.roomId
           );
           if (backendRoomData) {
+            const isAvailable = backendRoomData.isAvailable;
+            if (isAvailable) isAnyRoomAvailable = true;
+
             return {
               ...room,
-              isAvailable: backendRoomData.isAvailable,
+              isAvailable: isAvailable,
               no_of_vacant: backendRoomData.no_of_vacant,
               no_of_available_seats: backendRoomData.no_of_available_seats,
             };
@@ -159,28 +165,35 @@ function JustifiedExample() {
         });
       }
     }
+
     setState(newState);
+
+    // Update hostel availability map
+    setHostelAvailabilityMap((prev) => ({
+      ...prev,
+      [hostelName]: isAnyRoomAvailable,
+    }));
   };
+  
 
   useEffect(() => {
     if (backendData) {
-      //console.log('backend se hun bhai', backendData);
-      updateRoomData(mbhAState, setMbhAState, backendData);
-      updateRoomData(mbhBState, setMbhBState, backendData);
-      updateRoomData(mbhFState, setMbhFState, backendData);
-      updateRoomData(bh6State, setBh6State, backendData);
-      updateRoomData(bh7State, setBh7State, backendData);
-      updateRoomData(bh3State, setBh3State, backendData);
-      updateRoomData(bh4State, setBh4State, backendData);
-      updateRoomData(bh7eState, setBh7eState, backendData);
-      updateRoomData(gh2State, setGh2State, backendData);
-      updateRoomData(gh1State, setGh1State, backendData);
-      updateRoomData(mgh2020State, setMgh2020State, backendData);
-      updateRoomData(mghP2AState, setMghP2AState, backendData);
-      updateRoomData(mghP2BState, setMghP2BState, backendData);
+      updateRoomData("MBH-A", mbhAState, setMbhAState, backendData);
+      updateRoomData("MBH-B", mbhBState, setMbhBState, backendData);
+      updateRoomData("MBH-F", mbhFState, setMbhFState, backendData);
+      updateRoomData("BH-6", bh6State, setBh6State, backendData);
+      updateRoomData("BH-7", bh7State, setBh7State, backendData);
+      updateRoomData("BH-3", bh3State, setBh3State, backendData);
+      updateRoomData("BH-4", bh4State, setBh4State, backendData);
+      updateRoomData("BH-7E", bh7eState, setBh7eState, backendData);
+      updateRoomData("GH-2", gh2State, setGh2State, backendData);
+      updateRoomData("GH-1", gh1State, setGh1State, backendData);
+      updateRoomData("MGH-2020", mgh2020State, setMgh2020State, backendData);
+      updateRoomData("MGH-P2A", mghP2AState, setMghP2AState, backendData);
+      updateRoomData("MGH-P2B", mghP2BState, setMghP2BState, backendData);
     }
-  }, [backendData]); // Empty dependency array to run only once on mount
-
+  }, [backendData]);
+  
   useEffect(() => {
     //console.log("Selected hostel updated:", selectedHostel);
   }, [selectedHostel]);
