@@ -46,6 +46,19 @@ export default function EditDatabase() {
     }
   };
 
+  // Function to get columns for a specific table
+  const getTableColumns = (tableName) => {
+    return data
+      .filter((item) => item.table_name === tableName)
+      .map((item) => item.column_name);
+  };
+
+  // Function to initialize empty row data based on table columns
+  const initializeEmptyRowData = (tableName) => {
+    const columns = getTableColumns(tableName);
+    return Object.fromEntries(columns.map((col) => [col, ""]));
+  };
+
   const handleTableChange = async (e) => {
     const selectedTable = e.target.value;
     setTables(selectedTable);
@@ -71,11 +84,10 @@ export default function EditDatabase() {
       res = await res;
       setTableData(res.data.data);
       setOriginalTableData(res.data.data);
-      setNewRowData(
-        Object.fromEntries(
-          Object.keys(res.data.data[0] || {}).map((k) => [k, ""])
-        )
-      );
+      
+      // Initialize newRowData using table columns instead of existing data
+      setNewRowData(initializeEmptyRowData(selectedTable));
+      
       // Reset sorting when changing tables
       setSortConfig({ key: null, direction: "ascending" });
     } catch (err) {
@@ -196,25 +208,22 @@ export default function EditDatabase() {
   useEffect(() => {
     const getData = async () => {
       const response = await axiosInstance.get("/get_tables_columns.php");
-      console.log('responce ka data hun', response.data.data)
       setData(response.data.data);
     };
     getData();
   }, []);
-  return (
-    <div className="flex min-h-screen">
-      <div className="w-64 border-r border-gray-300 bg-white">
-        <AdminSidebar />
-      </div>
-      <div className="flex-grow p-6 bg-gray-100 flex flex-col gap-4 overflow-x-auto">
 
+  return (
+    <div className="flex">
+      <AdminSidebar />
+      <div className="w-full min-h-full p-6 border border-gray-300 bg-gray-100 flex flex-col gap-2">
         <h1 className="text-xl font-bold">Edit Database</h1>
         <select
           className="w-full p-2 rounded border border-gray-300"
           onChange={handleTableChange}
         >
           <option value="">Select a Table</option>
-          {[...new Set(data.map((item) => item.TABLE_NAME))].map(
+          {[...new Set(data.map((item) => item.table_name))].map(
             (table, idx) => (
               <option key={idx} value={table}>
                 {table}
@@ -245,6 +254,7 @@ export default function EditDatabase() {
           <button
             className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 ml-2"
             onClick={() => setAddModalOpen(true)}
+            disabled={!tables} // Disable if no table is selected
           >
             Add New Entry
           </button>
@@ -253,7 +263,7 @@ export default function EditDatabase() {
         <hr className="w-[96%] mx-auto h-[2px] bg-gray-900" />
         {tables && (
           <div className="mt-4">
-            {/* FILTERS */}
+            {/* FILTERS - Only show if there's data */}
             {originalTableData.length > 0 && (
               <div className="my-4 flex flex-wrap gap-2 items-center">
                 {Object.keys(originalTableData[0]).map((col, i) => (
@@ -276,6 +286,15 @@ export default function EditDatabase() {
                     }}
                   />
                 ))}
+              </div>
+            )}
+
+            {/* Empty table message */}
+            {originalTableData.length === 0 && (
+              <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
+                <p className="text-yellow-800">
+                  This table is currently empty. Click "Add New Entry" to add the first record.
+                </p>
               </div>
             )}
 
@@ -376,6 +395,7 @@ export default function EditDatabase() {
               </div>
             )}
 
+            {/* ADD MODAL - Now works even when table is empty */}
             {addModalOpen && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                 <div className="bg-white p-6 rounded shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto">

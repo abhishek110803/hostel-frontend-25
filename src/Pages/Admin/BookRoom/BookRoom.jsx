@@ -91,6 +91,20 @@ export default function BookRoom() {
     }
   };
 
+  // Function to check if all required students have valid names
+  const areStudentNamesValid = () => {
+    const requiredStudents = firstYrRoom ? [0] : [0, 1];
+    return requiredStudents.every(idx => {
+      const student = students[idx];
+      return student && student.name && student.name.trim() !== "";
+    });
+  };
+
+  // Function to check if all required students are loaded
+  const areStudentsLoaded = () => {
+    return firstYrRoom ? students[0] : (students[0] && students[1]);
+  };
+
   return (
     <div className="flex">
       <AdminSidebar />
@@ -127,22 +141,40 @@ export default function BookRoom() {
                 >
                   X
                 </button>
-                <div>Name: {students[idx]?.name}</div>
+                <div>Name: {students[idx]?.name || "Name not found"}</div>
                 <div>Roll Number: {students[idx]?.rollNumber}</div>
                 <div>Branch: {students[idx]?.branch}</div>
                 <div>Course: {students[idx]?.course}</div>
+                {/* Show warning if name is empty */}
+                {(!students[idx]?.name || students[idx]?.name.trim() === "") && (
+                  <div className="text-red-600 font-semibold mt-2">
+                    ⚠️ Student name is missing - cannot proceed with booking
+                  </div>
+                )}
               </div>
             )
           )}
         </div>
 
-        {(firstYrRoom ? !students[0] : !students[0] || !students[1]) ? (
+        {!areStudentsLoaded() ? (
           <button
             className="mt-4 p-2 bg-blue-500 text-white"
             onClick={handleFindRollNumbers}
           >
             Find Roll Numbers
           </button>
+        ) : !areStudentNamesValid() ? (
+          <div className="mt-4">
+            <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded mb-2">
+              Cannot proceed: One or more students have missing names. Please verify the roll numbers/application IDs.
+            </div>
+            <button
+              className="p-2 bg-blue-500 text-white"
+              onClick={handleFindRollNumbers}
+            >
+              Retry Finding Roll Numbers
+            </button>
+          </div>
         ) : (
           <button
             className="mt-4 p-2 bg-green-600 text-white"
@@ -168,7 +200,7 @@ export default function BookRoom() {
           </button>
         )}
 
-        {rooms.length > 0 && (
+        {rooms.length > 0 && areStudentNamesValid() && (
           <div className="mt-6">
             <select
               className="block mb-2 p-2 border"
