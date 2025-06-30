@@ -12,8 +12,8 @@ const StudentProfile = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await axiosInstance.get(`/student_profile.php`, {
-        params: { rollno },
+      const res = await axiosInstance.get("/student_profile.php", {
+        params: { rollno: rollno },
       });
       const data = res.data;
       if (data.error) {
@@ -32,7 +32,7 @@ const StudentProfile = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await axiosInstance.post(`/student_profile.php`, student);
+      const res = await axiosInstance.post("/student_profile.php", student);
       const data = res.data;
       if (data.error) {
         setMessage(data.error);
