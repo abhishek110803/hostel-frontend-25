@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AdminSidebar from "../AdminSidebar";
+import axiosInstance from "../../../Helper/axiosInstance";
 
 const StudentProfile = () => {
   const [rollno, setRollno] = useState("");
@@ -11,10 +12,10 @@ const StudentProfile = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(
-        `http://localhost/hostel-backend/student_profile.php?rollno=${rollno}`
-      );
-      const data = await res.json();
+      const res = await axiosInstance.get(`/student_profile.php`, {
+        params: { rollno },
+      });
+      const data = res.data;
       if (data.error) {
         setMessage(data.error);
         setStudent(null);
@@ -31,15 +32,8 @@ const StudentProfile = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(
-        "http://localhost/hostel-backend/student_profile.php",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(student),
-        }
-      );
-      const data = await res.json();
+      const res = await axiosInstance.post(`/student_profile.php`, student);
+      const data = res.data;
       if (data.error) {
         setMessage(data.error);
       } else {
@@ -54,6 +48,16 @@ const StudentProfile = () => {
   const handleChange = (e) => {
     setStudent({ ...student, [e.target.name]: e.target.value });
   };
+
+  return (
+    <div className="flex">
+      <AdminSidebar />
+      {/* Add your JSX to display student info, form fields, loading/message display */}
+    </div>
+  );
+};
+
+export default StudentProfile;
 
   return (
     <>
