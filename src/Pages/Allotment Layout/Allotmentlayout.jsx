@@ -217,7 +217,7 @@ function JustifiedExample() {
     console.log(" full ",courses.includes(course + sem) && gen === gender);
     console.log(" course ",course );
     console.log(" sem ",sem);
-     console.log(" gender ",gen);
+     console.log(" gender ",gender);
     return courses.includes(course + sem) && gen === gender;
   };
 
