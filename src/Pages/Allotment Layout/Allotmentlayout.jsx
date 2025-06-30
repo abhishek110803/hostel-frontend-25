@@ -237,7 +237,7 @@ function JustifiedExample() {
         justify
         onSelect={handleHostelChange}
       >
-        {show(["btech3","btech5"], "male", " ") && (
+        {show(["btech"], "male", " ") && (
           <Tab eventKey="MBH-A" title="MBH-A" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
