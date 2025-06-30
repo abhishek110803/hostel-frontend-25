@@ -37,8 +37,11 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
 
   const handleProceed = async () => {
     var data = separateString(newSelectedRoom);
-    data.code = session.code;
-    //  console.log('asdf;lkj', data);
+    data.code = session?.code;
+    data.rollno = session?.roll;
+    data.application_id = session?.application_id;
+    
+   
     const userConfirmed = window.confirm(
       "In the future, you will not be able to update this. Do you want to proceed?"
     );
