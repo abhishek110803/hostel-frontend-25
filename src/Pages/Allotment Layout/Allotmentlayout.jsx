@@ -214,6 +214,10 @@ function JustifiedExample() {
     }
   };
   const show = (courses, gen, hostel) => {
+    console.log(" full ",courses.includes(course + sem) && gen === gender);
+    console.log(" course ",course );
+    console.log(" sem ",sem);
+     console.log(" gender ",gen);
     return courses.includes(course + sem) && gen === gender;
   };
 
