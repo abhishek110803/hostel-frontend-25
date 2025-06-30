@@ -1,5 +1,5 @@
 import axios from "axios";
-
+const BASE_URL = "https://nitjal.in/";
 // const BASE_URL = "https://aviralsangal.in/first_year";
 // const BASE_URL2 = "https://v1.nitj.ac.in/hostelsNITJ/first";
 
