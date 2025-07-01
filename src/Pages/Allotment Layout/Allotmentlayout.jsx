@@ -97,7 +97,7 @@ function JustifiedExample() {
       //console.log('allotment layout: line-104', res);
 
       if (res?.data?.isBooked === true) {
-        updateSession({ stepIndex: 6 });
+        updateSession({ stepIndex: 6 ,step:6});
         // navigate("/confirmationPage");
         return;
       }
@@ -107,6 +107,7 @@ function JustifiedExample() {
         setSem(res?.data?.sem);
         setCourse(res?.data?.course);
         setGender(res?.data?.gender);
+        //  updateSession({ stepIndex: 6 ,step:6});
         // hostel_name,room_no, total_seats,filled_seats,vacant_seats,
       }
     } catch (error) {

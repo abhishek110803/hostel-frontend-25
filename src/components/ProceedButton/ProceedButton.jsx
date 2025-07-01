@@ -55,6 +55,7 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
             //console.log(data?.data);
             return data?.data?.message;
           },
+
           error: (data) => {
             //console.log(data?.response?.data);
             return data?.response?.data.message;
@@ -66,8 +67,10 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
         res = await res;
 
         if (res?.data?.status === "success") {
-          updateSession({ stepIndex: 6 });
+          // updateSession({ stepIndex: 6 });
+           updateSession({ stepIndex: 6 ,step:6});
         }
+
       } catch (error) {
         console.error("Error Logging out the user.", error);
         setVerified(false);
