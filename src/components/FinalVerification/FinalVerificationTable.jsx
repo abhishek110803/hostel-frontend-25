@@ -119,7 +119,7 @@ export default function SelfVerificationTable() {
       <form ref={formRef}
         // action="https://v1.nitj.ac.in/hostelsNITJ/hostel_form.php"
         // action="http://localhost/hostel-php-first-year/hostel_form.php"
-        action="https://v1.nitj.ac.in/hostel-php-first-year-main/hostel_form.php"
+        action={`${import.meta.env.VITE_BASE_URL}/hostel-php-first-year-main/hostel_form.php`}
         method="post" target="_blank" style={{ display: 'none' }}>
         <input type="hidden" name="application_id" value={session?.application_id} />
       </form>
