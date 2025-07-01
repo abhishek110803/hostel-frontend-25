@@ -36,7 +36,7 @@ export default function SelfVerificationTable() {
   const getConfirmationData = async () => {
     const url = '/get_confirmation_details.php';
     try {
-      let res = axiosInstance.post(url, { code: session.code });
+      let res = axiosInstance.post(url, { rollno: session.roll });
       await toast.promise(res, {
         loading: "Fetching data for you.",
         success: (data) => data?.data?.message,
