@@ -140,13 +140,13 @@ function NavBar() {
               </Link>
               {(!session) &&
                 <>
-                  <Link
+                  {/* <Link
                     to="/SignUp"
                     className="text-blue-600 hover:text-blue-700 py-2 w-full text-left ml-3"
                   >
                     <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
                     Signup
-                  </Link>
+                  </Link> */}
                   <Link
                     to="/SignIn"
                     className="text-blue-600  hover:text-blue-700 py-2 w-full text-left ml-3"

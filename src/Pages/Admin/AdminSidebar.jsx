@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "../../components/ProtectedPath/SessionContext";
 import {
   DocumentTextIcon,
@@ -6,20 +6,21 @@ import {
   CheckCircleIcon,
   SearchIcon,
   LogoutIcon,
-  DocumentAddIcon,
 } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 import { Done, Person } from "@mui/icons-material";
-import { Database, Edit, Verified } from "lucide-react";
+import { Database, Verified } from "lucide-react";
 
 function AdminSidebar() {
-  const { logout } = useSession();
+  const { logout, session } = useSession();
+  const [sidebarLinks, setSidebarLinks] = useState([]);
 
   const handleLogout = async () => {
     logout();
   };
 
-  const sidebarLinks = [
+  // Define all sidebar links
+  const allSidebarLinks = [
     {
       to: "/HostelSummary",
       label: "Hostel Summary",
@@ -60,31 +61,47 @@ function AdminSidebar() {
       label: "Book Room",
       icon: Done,
     },
+  ];
+
+  // Define clerk-only links
+  const clerkSidebarLinks = [
     {
-      to: "/AdminMandatoryDocs",
-      label: "Admin Mandatory Docs",
-      icon: DocumentAddIcon,
+      to: "/DocumentVerification",
+      label: "Document Verification",
+      icon: CheckCircleIcon,
     },
   ];
 
+  // Set sidebar links based on role
+  useEffect(() => {
+    if (session?.role === "admin") {
+      setSidebarLinks(allSidebarLinks);
+    } else if (session?.role === "clerk") {
+      setSidebarLinks(clerkSidebarLinks);
+    } else {
+      setSidebarLinks([]);
+    }
+  }, [session?.role]);
+
   return (
-    <div className="bg-gray-100 shadow-md w-64 min-w-[250px] sticky top-0 h-screen overflow-y-auto md:block hidden">
+    <div className="bg-gray-100 shadow-md w-[20%] sticky top-0 h-[1300px]">
       <div className="p-4">
-        <nav className="flex flex-col gap-1">
+        <nav className="flex flex-col">
           {sidebarLinks.map((item, index) => (
             <Link
               key={index}
               to={item.to}
-              className="py-2 px-4 flex items-center hover:bg-gray-200 rounded-md text-gray-700"
+              className="custom-nav-link py-2 px-4 flex items-center hover:bg-gray-200"
             >
-              <item.icon className="h-5 w-5 mr-3" />
-              <span className="text-sm font-medium">{item.label}</span>
+              <item.icon className="h-5 w-5 mr-2" />
+              {item.label}
             </Link>
           ))}
 
+          {/* Logout button (not a Link) */}
           <button
             onClick={handleLogout}
-            className="mt-4 bg-red-600 hover:bg-red-500 text-white font-semibold flex items-center px-4 py-2 rounded-md"
+            className="btn bg-red-700 mt-3 text-lg font-bold hover:bg-red-500 text-white mx-1 flex items-center px-4 py-2"
           >
             <LogoutIcon className="h-5 w-5 mr-2" />
             Logout

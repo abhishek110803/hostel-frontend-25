@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // Import useRef
 import axiosInstance from "../../../Helper/axiosInstance";
 import { toast } from "react-hot-toast";
 import * as XLSX from "xlsx";
@@ -19,6 +19,9 @@ export default function EditDatabase() {
     key: null,
     direction: "ascending",
   });
+
+  // Ref for the hidden file input
+  const fileInputRef = useRef(null);
 
   const deleteRow = async (row) => {
     try {
@@ -205,6 +208,126 @@ export default function EditDatabase() {
     );
   };
 
+  // Updated function to handle file selection and upload
+  const handleFileUpload = async (event) => {
+    if (!tables) {
+      toast.error("Please select a table first.");
+      return;
+    }
+
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    // Check file type
+    const fileName = file.name.toLowerCase();
+    const isExcel = fileName.endsWith('.xlsx') || fileName.endsWith('.xls');
+    const isCSV = fileName.endsWith('.csv');
+
+    if (!isExcel && !isCSV) {
+      toast.error("Please upload an Excel (.xlsx, .xls) or CSV file.");
+      return;
+    }
+
+    try {
+      // Show loading toast
+      const loadingToast = toast.loading("Processing file...");
+
+      // Read file as array buffer
+      const arrayBuffer = await file.arrayBuffer();
+      
+      // Parse the file using xlsx library
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      
+      // Get the first worksheet
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      
+      // Convert to JSON with header row as keys
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { 
+        header: 1,
+        defval: null // Use null for empty cells
+      });
+
+      if (jsonData.length === 0) {
+        toast.dismiss(loadingToast);
+        toast.error("The file appears to be empty.");
+        return;
+      }
+
+      // Extract headers from first row
+      const headers = jsonData[0];
+      if (!headers || headers.length === 0) {
+        toast.dismiss(loadingToast);
+        toast.error("No headers found in the file.");
+        return;
+      }
+
+      // Convert data rows to objects with headers as keys
+      const dataRows = jsonData.slice(1).map(row => {
+        const rowObj = {};
+        headers.forEach((header, index) => {
+          if (header && header.toString().trim()) { // Only include valid headers
+            rowObj[header.toString().trim()] = row[index] || null;
+          }
+        });
+        return rowObj;
+      });
+
+      if (dataRows.length === 0) {
+        toast.dismiss(loadingToast);
+        toast.error("No data rows found in the file.");
+        return;
+      }
+
+      toast.dismiss(loadingToast);
+
+      // Send the JSON data to backend
+      const promise = axiosInstance.post(
+        "/insert_excel.php",
+        {
+          table: tables,
+          data: dataRows
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      await toast.promise(promise, {
+        loading: "Inserting data into database...",
+        success: (res) => {
+          if (res.data.success) {
+            // After successful upload, refresh table data
+            handleTableChange({ target: { value: tables } }); 
+            
+            // Show detailed success message
+            let message = res.data.message;
+            if (res.data.failed_count > 0) {
+              message += ` ${res.data.failed_count} rows failed.`;
+            }
+            return message;
+          }
+          return res.data.message;
+        },
+        error: (err) => {
+          console.error("Excel upload error:", err);
+          return err.response?.data?.message || "Failed to upload Excel data.";
+        },
+      });
+
+    } catch (err) {
+      console.error("File processing error:", err);
+      toast.error("Error processing the file. Please check the file format.");
+    } finally {
+      // Clear the file input value to allow re-uploading the same file
+      event.target.value = null;
+    }
+  };
+
   useEffect(() => {
     const getData = async () => {
       const response = await axiosInstance.get("/get_tables_columns.php");
@@ -231,7 +354,7 @@ export default function EditDatabase() {
             )
           )}
         </select>
-        <div className="mb-4">
+        <div className="mb-4 flex gap-2">
           <button
             className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
             onClick={() => {
@@ -252,13 +375,28 @@ export default function EditDatabase() {
             Extract Excel
           </button>
           <button
-            className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700 ml-2"
+            className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
             onClick={() => setAddModalOpen(true)}
-            disabled={!tables} // Disable if no table is selected
+            disabled={!tables}
           >
             Add New Entry
           </button>
-          {/* <button className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 ml-2" onClick={() => alert(`Uploading Excel for ${tables}`)}>Upload Excel</button> */}
+          {/* Updated Upload Excel Button and hidden input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileUpload}
+            accept=".xlsx,.xls,.csv"
+            style={{ display: 'none' }}
+          />
+          <button
+            className="bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={!tables}
+            title="Upload Excel (.xlsx, .xls) or CSV files"
+          >
+            Upload Excel
+          </button>
         </div>
         <hr className="w-[96%] mx-auto h-[2px] bg-gray-900" />
         {tables && (
@@ -293,7 +431,7 @@ export default function EditDatabase() {
             {originalTableData.length === 0 && (
               <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded">
                 <p className="text-yellow-800">
-                  This table is currently empty. Click "Add New Entry" to add the first record.
+                  This table is currently empty. Click "Add New Entry" to add the first record, or "Upload Excel" to import data.
                 </p>
               </div>
             )}
