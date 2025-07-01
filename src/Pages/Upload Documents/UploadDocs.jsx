@@ -73,7 +73,10 @@ const DocumentUpload = () => {
     }
 
     try {
-      let url = (session?.sem === '1') ? `/first_year_upload_doc_insert.php` : `/upload_doc_insert.php`;
+      let url =
+        session?.sem === "1"
+          ? `/first_year_upload_doc_insert.php`
+          : `/upload_doc_insert.php`;
       let res = axiosInstance.post(url, formData);
 
       await toast.promise(res, {
@@ -120,7 +123,7 @@ const DocumentUpload = () => {
         {session?.sem === "1" ? <FirstYear /> : <StepProcessBar />}
       </div>
       <div className="flex justify-center align-center mb-2">
-        <section className="bg-white w-full lg:w-2/3 h-full">
+        <section className="bg-white w-full lg:w-2/3 h-full pb-10">
           <div className="flex items-center justify-center px-2 py-4 mt-4 md:h-screen lg:py-0">
             <div className="w-full">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-blue-600 md:text-2xl ml-4 mb-4 text-center">
