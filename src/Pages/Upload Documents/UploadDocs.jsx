@@ -95,7 +95,7 @@ const DocumentUpload = () => {
 
       if (res?.data?.status === "success") {
         updateSession({ stepIndex: 4, step: res?.data?.step });
-        // navigate("/RoomMate");
+        navigate("/SelfVerification");
       }
     } catch (error) {
       setVerified(false);

@@ -43,8 +43,12 @@ const EditDocs = ({ setIsEditing }) => {
   const { session } = useSession();
 
   const sendForm = async () => {
+
+     
     formData.set("code", session.code);
     formData.set("application_id", session?.application_id);
+    formData.set("rollno", session?.roll);
+
 
     try {
       let url = (session?.sem === '1') ? `/first_year_upload_doc_insert.php` : `/upload_doc_insert.php`;
@@ -64,6 +68,7 @@ const EditDocs = ({ setIsEditing }) => {
       });
 
       res = await res;
+      
       //console.log('Response after toast promise:', res?.data);
 
       if (res?.data?.status === "success") {
