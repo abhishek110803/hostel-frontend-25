@@ -264,7 +264,7 @@ export default function SelfVerificationTable() {
                       </Alert>
                     )}
                   
-                    {hideCaptcha && (  <Captcha
+                    {!hideCaptcha && (  <Captcha
                         setVerification={sendToCaptchaForValidation}
                         setShowCaptcha={setShowCaptcha}
 
@@ -288,7 +288,7 @@ export default function SelfVerificationTable() {
                     Save and Proceed
 
                   </button>
-                  
+
                 </div>
               </div>
             </div>
