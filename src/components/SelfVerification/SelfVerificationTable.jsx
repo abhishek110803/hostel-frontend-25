@@ -260,12 +260,12 @@ export default function SelfVerificationTable() {
                         Captcha Validated Successful
                       </Alert>
                     )}
-                    {showCaptcha && (
+                  
                       <Captcha
                         setVerification={sendToCaptchaForValidation}
                         setShowCaptcha={setShowCaptcha}
                       />
-                    )}
+                 
                   </div>
 
                   <button
