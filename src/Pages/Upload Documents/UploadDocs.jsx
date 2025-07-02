@@ -66,8 +66,7 @@ const DocumentUpload = () => {
     formData.set("application_id", session?.application_id);
     formData.set("code", session?.code);
 
-    // Debugging logs: Log all form data
-    //console.log('Form data:');
+  
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
@@ -94,10 +93,10 @@ const DocumentUpload = () => {
       });
 
       res = await res;
-      //console.log('Response after toast promise:', res?.data);
-
+      
       if (res?.data?.status === "success") {
         updateSession({ stepIndex: 4, step: res?.data?.step });
+        
         navigate("/SelfVerification");
       }
     } catch (error) {

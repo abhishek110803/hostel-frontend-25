@@ -11,6 +11,7 @@ import { Alert } from "@mui/material";
 export default function SelfVerificationTable() {
   const [verified, setVerified] = useState(false);
   const [showCaptcha, setShowCaptcha] = useState(false);
+  const [hideCaptcha, setHideCaptcha] = useState(false);
 
   const [isChecked, setIsChecked] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -25,7 +26,9 @@ export default function SelfVerificationTable() {
   };
   const sendToCaptchaForValidation = (e) => {
     setVerified(e);
+    setHideCaptcha(e);
   };
+ 
 
   const { updateSession, session } = useSession();
   const navigate = useNavigate();
@@ -261,10 +264,12 @@ export default function SelfVerificationTable() {
                       </Alert>
                     )}
                   
-                      <Captcha
+                    {hideCaptcha && (  <Captcha
                         setVerification={sendToCaptchaForValidation}
                         setShowCaptcha={setShowCaptcha}
+
                       />
+                      )}
                  
                   </div>
 
@@ -276,9 +281,14 @@ export default function SelfVerificationTable() {
                         ? "bg-blue-600 text-white"
                         : "bg-gray-400 text-gray-700 cursor-not-allowed"
                     }`}
+
+
                   >
+
                     Save and Proceed
+
                   </button>
+                  
                 </div>
               </div>
             </div>
