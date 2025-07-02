@@ -81,7 +81,7 @@ function NavBar() {
         </Navbar.Toggle>
         <div className="hidden md:flex ml-auto items-center">
       
-          <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1 text-white" /><span className="mr-3 text-lg font-bold text-white"> {session?.application_id}</span>
+          <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1 text-white" /><span className="mr-3 text-lg font-bold text-white"> {session?.application_id} {session?.roll} </span>
           <Link to="/Changepassword" className="btn btn-outline-white bg-yellow-700  hover:bg-yellow-500 text-lg font-bold  btn-outline-white text-white mx-1">
             <Edit className="h-5 w-5 inline-block -mt-1 mr-1" />
             Change Password
@@ -96,7 +96,7 @@ function NavBar() {
           <div className="absolute top-14 right-4 w-32 bg-white shadow-lg z-50 rounded-lg md:hidden">
             <div className="flex flex-col items-center py-2">
            
-              <span className="mr-3 text-lg font-bold text-blue-700 "> <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />{session?.application_id}</span>
+              <span className="mr-3 text-lg font-bold text-blue-700 "> <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />{session?.application_id} {session?.roll} </span>
               <Link
                 to="/Changepassword"
                 className="text-blue-600 hover:text-blue-700 py-2 text-lg font-bold w-full text-left ml-3"
