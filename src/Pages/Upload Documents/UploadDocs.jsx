@@ -26,22 +26,35 @@ const DocumentUpload = () => {
     window.history.forward();
   }, []);
 
-  const handleSubmit = (event) => {
-    setVerified(false);
-    setShowCaptcha(true);
-    event.preventDefault();
-    const userConfirmed = window.confirm(
-      "Please make sure your files are uploaded correctly. In the future, you will not be able to update this. Do you want to proceed?"
-    );
-    if (userConfirmed) {
-      sendForm();
-    } else {
-      toast("Please review and update your files if needed.");
-    }
-  };
-  const sendToCaptchaForValidation = (e) => {
-    setVerified(e);
-  };
+  // const handleSubmit = (event) => {
+  //   setVerified(false);
+  //   setShowCaptcha(true);
+  //   event.preventDefault();
+  //   const userConfirmed = window.confirm(
+  //     "Please make sure your files are uploaded correctly. In the future, you will not be able to update this. Do you want to proceed?"
+  //   );
+  //   if (userConfirmed) {
+  //     sendForm();
+  //   } else {
+  //     toast("Please review and update your files if needed.");
+  //   }
+  // };
+  // const sendToCaptchaForValidation = (e) => {
+  //   setVerified(e);
+  // };
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  const userConfirmed = window.confirm(
+    "Please make sure your files are uploaded correctly. In the future, you will not be able to update this. Do you want to proceed?"
+  );
+
+  if (userConfirmed) {
+    sendForm();
+  } else {
+    toast("Please review and update your files if needed.");
+  }
+};
 
   const handleFileChange = (event) => {
     const { name, files } = event.target;
@@ -134,7 +147,7 @@ const DocumentUpload = () => {
                     className="space-y-4 md:space-y-6"
                     action=""
                     method="POST"
-                    onSubmit={handleSubmit}
+                    onSubmit={handleSubmit} 
                   >
                     <div className="space-y-4">
                       <div className="w-full">
@@ -295,7 +308,6 @@ const DocumentUpload = () => {
                             : "bg-blue-400 text-black"
                         } items-center justify-center w-full md:w-1/3 py-3 px-4 border rounded-md focus:ring-2 focus:ring-offset-1 border-red-500 hover:border-blue-400 focus:ring-blue-400`}
                         disabled={!verified}
-                        onClick={handleSubmit}
                       >
                         Save & Proceed
                       </button>
