@@ -96,7 +96,7 @@ const Sdtdet = () => {
     getData();
   }, []);
 
-  const base_url = "https://v1.nitj.ac.in/hostelsNITJ/"; //backend URL
+  const base_url = `${import.meta.env.VITE_BASE_URL}`;
 
   return (
     <div className="mx-auto md:w-2/3">
