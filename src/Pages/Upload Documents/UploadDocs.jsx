@@ -111,7 +111,9 @@ const handleSubmit = async (event) => {
       
       if (res?.data?.status === "success") {
         updateSession({ stepIndex: 4, step: res?.data?.step });
-        navigate("/SelfVerification");
+        //  navigate("/SelfVerification");
+        
+       
       }
     } catch (error) {
       setVerified(false);
