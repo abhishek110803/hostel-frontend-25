@@ -96,7 +96,6 @@ const DocumentUpload = () => {
       
       if (res?.data?.status === "success") {
         updateSession({ stepIndex: 4, step: res?.data?.step });
-        
         navigate("/SelfVerification");
       }
     } catch (error) {
@@ -296,6 +295,7 @@ const DocumentUpload = () => {
                             : "bg-blue-400 text-black"
                         } items-center justify-center w-full md:w-1/3 py-3 px-4 border rounded-md focus:ring-2 focus:ring-offset-1 border-red-500 hover:border-blue-400 focus:ring-blue-400`}
                         disabled={!verified}
+                        onClick={handleSubmit}
                       >
                         Save & Proceed
                       </button>
