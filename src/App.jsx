@@ -4,7 +4,6 @@ import "./App.css";
 import HomePage from "./Pages/HomePage/Homepage";
 import HostelAllotmentTable from "./Pages/Allotment Layout/Allotmentlayout";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SignUp from "./Pages/SignUp/SignUp";
 import SignIn from "./Pages/SignIn/SignIn";
 import SignIn1styr from "./Pages/SignIn/SignIn1styr";
 import RegistrationForm from "./Pages/RegistrationForm/RegistrationForm";
@@ -71,11 +70,9 @@ function App() {
             {/* 2,3,4th year */}
             <Route path="/SignIn" element={<SignIn1styr />} />
             <Route path="/AdminSignIn" element={<AdminSignIn />} />
-            <Route path="/SignUp" element={<SignUp />} />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/NewPassword/:code" element={<SetNewPassword />} />
             <Route path="/Verify/:code" element={<EmailVerify />} />
-            <Route path="/Profile" element={<SignUp />} />
             <Route path="/Otp" element={<Otp />} />
             <Route
               path="/FirstYearChangePassword"

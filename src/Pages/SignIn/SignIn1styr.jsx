@@ -282,7 +282,7 @@ const UnifiedSignIn = () => {
       let endpoint = "/sign_in.php";
       if (year === "1st year") {
         payload = { application_id: applicationId, password };
-        endpoint = "/first_year_sign_in.php"
+        endpoint = "/first_year_sign_in.php";
       } else {
         payload = { email, password };
       }
@@ -312,7 +312,7 @@ const UnifiedSignIn = () => {
           session.step = Number(res.data.step);
 
           // session.course = matches[1] || null;
-          session.sem = '1';
+          session.sem = "1";
           updateSession(session);
           navigate("/FirstYearChangePassword");
         } else {
@@ -494,17 +494,6 @@ const UnifiedSignIn = () => {
                 Reset Password
               </Link>
             </p>
-            {year !== "1st year" && (
-              <p className="text-sm font-light text-blue-500 text-center">
-                Don't have an account?{" "}
-                <Link
-                  to="/SignUp"
-                  className="font-medium text-blue-600 hover:underline"
-                >
-                  Sign up here
-                </Link>
-              </p>
-            )}
           </form>
         </div>
       </div>
