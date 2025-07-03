@@ -133,7 +133,7 @@ export default function SelfVerificationTable() {
         delete doc.timestamp;
         delete doc.uploaded;
         delete doc.rollno;
-        delete doc.clerk_verified;
+        // delete doc.clerk_verified;
 
         //console.log('res ka data', res?.data);
         setStudentData(student);
@@ -185,17 +185,24 @@ export default function SelfVerificationTable() {
                 </div>
                 <hr className="my-2 border-t border-blue-900" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-                  {Object.keys(studentData).map((key) => (
-                    <div key={key} className="mx-4 mb-4 text-left">
-                      <span className="font-bold">
-                        {key
-                          .replace("_", " ")
-                          .replace(/\b\w/g, (l) => l.toUpperCase())}
-                        :
-                      </span>{" "}
-                      {studentData[key]}
-                    </div>
+                  {Object.keys(studentData) 
+                    .filter((key) =>
+                        key !== "Clerk Verified" &&
+                        key !== "Is Allowed" &&
+                        key !== "Skip Clerk"
+                    )
+                    .map((key) => (
+                      <div key={key} className="mx-4 mb-4 text-left">
+                        <span className="font-bold">
+                          {key
+                            .replace("_", " ")
+                            .replace(/\b\w/g, (l) => l.toUpperCase())}
+                          :
+                        </span>{" "}
+                        {studentData[key]}
+                      </div>
                   ))}
+
                   {/* {Object.keys(documents).map((key) => (
                   <div key={key} className="mb-4">
                     <span className="font-bold w-48">
