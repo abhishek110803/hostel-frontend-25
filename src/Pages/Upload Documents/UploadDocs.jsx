@@ -65,8 +65,10 @@ const handleSubmit = async (event) => {
       return;
     }
     if (files.length > 0) {
-      formData.set(name, files[0]);
-      setFormData(formData);
+      const newFormData = new FormData(formData);
+      newFormData.set(name, files[0]);
+      setFormData(newFormData);
+
       const fileURL = URL.createObjectURL(files[0]);
       setFileURLs((prevURLs) => ({ ...prevURLs, [name]: fileURL }));
     }
