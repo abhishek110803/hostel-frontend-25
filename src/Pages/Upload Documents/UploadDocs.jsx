@@ -39,9 +39,9 @@ const DocumentUpload = () => {
   //     toast("Please review and update your files if needed.");
   //   }
   // };
-  // const sendToCaptchaForValidation = (e) => {
-  //   setVerified(e);
-  // };
+  const sendToCaptchaForValidation = (e) => {
+    setVerified(e);
+  };
 const handleSubmit = async (event) => {
   event.preventDefault();
 
