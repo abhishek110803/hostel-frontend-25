@@ -214,13 +214,24 @@ function JustifiedExample() {
       });
     }
   };
-  const show = (courses, gen, hostel) => {
-    console.log(" full ",courses.includes(course + sem) && gen === gender);
-    console.log(" course ",course );
-    console.log(" sem ",sem);
-     console.log(" gender ",gender);
-    return courses.includes(course + sem) && gen === gender;
+
+  const [hostelEligibility, setHostelEligibility] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get('/get_hostel_eligibility.php')
+      .then(res => setHostelEligibility(res.data))
+      .catch(err => console.error("Eligibility fetch error", err));
+  }, []);
+
+  const show = (hostelName) => {
+    return hostelEligibility.some(entry =>
+      entry.hostel_name === hostelName &&
+      entry.gender === gender &&
+      entry.allowed_course_sem.includes(course + sem)
+    );
   };
+
+
 
   return (
     <>
@@ -242,7 +253,7 @@ function JustifiedExample() {
         justify
         onSelect={handleHostelChange}
       >
-        {show(["btech3","btech5"], "male", " ") && (
+        {show("MBH-A") && (
           <Tab eventKey="MBH-A" title="MBH-A" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -352,7 +363,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show([""], "male", "BH-1") && (
+        {show("BH-1") && (
           <Tab eventKey="BH-1" title="BH-1" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -446,7 +457,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show([""], "male", "BH-2") && (
+        {show("BH-2") && (
           <Tab eventKey="BH-2" title="BH-2" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -508,7 +519,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show([""], "male", "BH-5") && (
+        {show("BH-5") && (
           <Tab eventKey="BH-5" title="BH-5" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -569,7 +580,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["", "", ""], "male", "MBH-B") && (
+        {show("MBH-B") && (
           <Tab eventKey="MBH-B" title="MBH-B" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -694,7 +705,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["", "", ""], "male", "MBH-F") && (
+        {show("MBH-F") && (
           <Tab eventKey="MBH-F" title="MBH-F" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -804,7 +815,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["mtech1", "mba1", "msc1"], "male") && (
+        {show("BH-3") && (
           <Tab eventKey="BH-3" title="BH-3" className="xyz  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -866,7 +877,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["mtech1", "mba1", "msc1"], "male", "BH-4") && (
+        {show("BH-4") && (
           <Tab eventKey="BH-4" title="BH-4" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -928,7 +939,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["mtech1", "mba1", "msc1"], "male", "BH-6") && (
+        {show("BH-6") && (
           <Tab eventKey="BH-6" title="BH-6" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -990,7 +1001,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["mtech1", "mba1", "msc1"], "male", "BH-7") && (
+        {show("BH-7") && (
           <Tab eventKey="BH-7" title="BH-7" className="  ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -1068,7 +1079,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["", ""], "male", "BH-7E") && (
+        {show("BH-7E") && (
           <Tab eventKey="BH-7E" title="BH-7E" className=" ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -1137,7 +1148,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["", ""], "female") && (
+        {show("GH-1") && (
           <Tab eventKey="GH-1" title="GH-1" className=" ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -1178,7 +1189,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["", ""], "female") && (
+        {show("GH-2") && (
           <Tab eventKey="GH-2" title="GH-2" className=" ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -1233,7 +1244,7 @@ function JustifiedExample() {
             />
           </Tab>
         )}
-        {show([""], "female") && (
+        {show("MGH-PHASE-1") && (
           <Tab eventKey="MGH-PHASE-1" title="MGH-PHASE-1" className=" ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -1403,7 +1414,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["mtech1", "mba1", "msc1"], "female", "MGH-P-2 A Block") && (
+        {show("MGH-P-2 A Block") && (
           <Tab eventKey="MGH-P-2 A Block" title="MGH-P-2 A Block" className=" ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
@@ -1656,7 +1667,7 @@ function JustifiedExample() {
           </Tab>
         )}
 
-        {show(["mtech1", "mba1", "msc1"], "female", "MGH-P-2 B Block") && (
+        {show("MGH-P-2 B Block") && (
           <Tab eventKey="MGH-P-2 B Block" title="MGH-P-2 B Block" className=" ">
             <AvailabilityTab
               newSelectedRoom={selectedRoom.roomNo}
