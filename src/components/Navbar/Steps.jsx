@@ -19,10 +19,7 @@ import axiosInstance from "../../Helper/axiosInstance";
 import toast from "react-hot-toast";
 import { Edit } from "@mui/icons-material";
 
-
-
 function NavBar() {
-
   const navigate = useNavigate();
   const handleBack = () => {
     navigate("/");
@@ -31,12 +28,8 @@ function NavBar() {
   const { setSession, updateSession, logout } = useSession();
 
   const handleLogout = async () => {
-
     logout();
-
-
-  }
-
+  };
 
   const { session } = useSession();
 
@@ -46,8 +39,7 @@ function NavBar() {
     setIsOpen(!isOpen);
   };
 
-
-
+  console.log("#$# ---- File A -- ", session);
 
   return (
     <Navbar
@@ -55,7 +47,6 @@ function NavBar() {
       className="bg-blue-500 sticky top-0 w-full mb-4  shadow-sm z-50"
     >
       <Container fluid className="relative">
-
         <div className="flex items-center mx-3">
           <button
             onClick={handleBack}
@@ -69,9 +60,6 @@ function NavBar() {
           </Navbar.Brand> */}
         </div>
 
-
-
-
         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleMenu}>
           {isOpen ? (
             <XIcon className="h-6 w-6  text-white" />
@@ -80,23 +68,34 @@ function NavBar() {
           )}
         </Navbar.Toggle>
         <div className="hidden md:flex ml-auto items-center">
-      
-          <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1 text-white" /><span className="mr-3 text-lg font-bold text-white"> {session?.application_id} {session?.roll} </span>
-          <Link to="/Changepassword" className="btn btn-outline-white bg-yellow-700  hover:bg-yellow-500 text-lg font-bold  btn-outline-white text-white mx-1">
+          <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1 text-white" />
+          <span className="mr-3 text-lg font-bold text-white">
+            {" "}
+            {session?.application_id} {session?.roll}{" "}
+          </span>
+          <Link
+            to="/Changepassword"
+            className="btn btn-outline-white bg-yellow-700  hover:bg-yellow-500 text-lg font-bold  btn-outline-white text-white mx-1"
+          >
             <Edit className="h-5 w-5 inline-block -mt-1 mr-1" />
             Change Password
           </Link>
-          <Link onClick={handleLogout} className="btn bg-red-700 text-lg font-bold  btn-outline-white hover:bg-red-500 text-white mx-1">
+          <Link
+            onClick={handleLogout}
+            className="btn bg-red-700 text-lg font-bold  btn-outline-white hover:bg-red-500 text-white mx-1"
+          >
             <LogoutIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
             Logout
           </Link>
-
         </div>
         {isOpen && (
           <div className="absolute top-14 right-4 w-32 bg-white shadow-lg z-50 rounded-lg md:hidden">
             <div className="flex flex-col items-center py-2">
-           
-              <span className="mr-3 text-lg font-bold text-blue-700 "> <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />{session?.application_id} {session?.roll} </span>
+              <span className="mr-3 text-lg font-bold text-blue-700 ">
+                {" "}
+                <UserIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
+                {session?.application_id} {session?.roll}{" "}
+              </span>
               <Link
                 to="/Changepassword"
                 className="text-blue-600 hover:text-blue-700 py-2 text-lg font-bold w-full text-left ml-3"
@@ -111,9 +110,6 @@ function NavBar() {
                 <LogoutIcon className="h-5 w-5 inline-block -mt-1 mr-1" />
                 Logout
               </Link>
-
-
-
             </div>
           </div>
         )}
