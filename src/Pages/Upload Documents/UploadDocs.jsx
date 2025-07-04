@@ -192,9 +192,10 @@ const handleSubmit = async (event) => {
                           htmlFor="mess-receipt"
                           className="block mb-2 text-m font-medium text-black"
                         >
-                          2. Mess Advance Receipt (July to Dec-2024)
+                          2. Mess Advance Receipt (July to Dec-{new Date().getFullYear()})
                           <small className="text-red-600 text-2xl ">*</small>
                         </label>
+
                         <div className="flex flex-col md:flex-row items-center">
                           <input
                             type="file"
