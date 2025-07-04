@@ -104,14 +104,14 @@ export default function SelfVerificationTable() {
           </div>
         </div>
       </div>
-      {session.underTaking === true ? <form ref={formRef}
-        action= {`${base_url}/hostel_form.php`}
+       {session.underTaking === true ? <form ref={formRef}
+        action= {`${base_url}hoste_form.php`}
         // action="http://localhost/Updated_Backend_Hostels_Allotment/single_undertaking.php" 
         method="post" target="_blank" style={{ display: 'none' }}>
         <input type="hidden" name="rollno" value={session?.application_id} />
       </form> :
         <form ref={formRef}
-          action={`${base_url}/undertaking.php`}
+          action={`${base_url}undertaking.php`}
           // action="http://localhost/Updated_Backend_Hostels_Allotment/undertaking.php" 
           method="post" target="_blank" style={{ display: 'none' }}>
           <input type="hidden" name="rollno" value={session?.application_id} />
