@@ -34,25 +34,45 @@ export default function SelfVerificationTable() {
   };
   const base_url = `${import.meta.env.VITE_BASE_URL}`;
 
-  const getConfirmationData = async () => {
-    const url = '/get_confirmation_details.php';
-    try {
-      let res = axiosInstance.post(url, { code: session.code });
-      await toast.promise(res, {
-        loading: "Fetching data for you.",
-        success: (data) => data?.data?.message,
-        error: (data) => data?.response?.data.message,
-      });
+  // const getConfirmationData = async () => {
+  //   const url = '/get_confirmation_details.php';
+  //   try {
+  //     let res = axiosInstance.post(url, { code: session.code });
+  //     await toast.promise(res, {
+  //       loading: "Fetching data for you.",
+  //       success: (data) => data?.data?.message,
+  //       error: (data) => data?.response?.data.message,
+  //     });
 
-      res = await res;
+  //     res = await res;
 
-      if (res?.data?.status === "success") {
-        setStudentData(flattenObject(res?.data?.data));
-      }
-    } catch (error) {
-      console.error("Error accepting request.", error);
+  //     if (res?.data?.status === "success") {
+  //       setStudentData(flattenObject(res?.data?.data));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error accepting request.", error);
+  //   }
+  // };
+const getConfirmationData = async () => {
+  const url = '/get_confirmation_details.php';
+  try {
+    let res = axiosInstance.post(url, { rollno: session.roll });
+
+    await toast.promise(res, {
+      loading: "Fetching data for you.",
+      success: (data) => data?.data?.message,
+      error: (data) => data?.response?.data.message,
+    });
+
+    res = await res;
+
+    if (res?.data?.status === "success") {
+      setStudentData(flattenObject(res?.data?.data));
     }
-  };
+  } catch (error) {
+    console.error("Error fetching confirmation details:", error);
+  }
+};
 
   useEffect(() => {
     getConfirmationData();
