@@ -128,13 +128,13 @@ const getConfirmationData = async () => {
         action= {`${base_url}hoste_form.php`}
         // action="http://localhost/Updated_Backend_Hostels_Allotment/single_undertaking.php" 
         method="post" target="_blank" style={{ display: 'none' }}>
-        <input type="hidden" name="rollno" value={session?.application_id} />
+        <input type="hidden" name="rollno" value={session?.roll} />
       </form> :
         <form ref={formRef}
           action={`${base_url}undertaking.php`}
           // action="http://localhost/Updated_Backend_Hostels_Allotment/undertaking.php" 
           method="post" target="_blank" style={{ display: 'none' }}>
-          <input type="hidden" name="rollno" value={session?.application_id} />
+          <input type="hidden" name="rollno" value={session?.roll} />
         </form>}
 
       {/* <form ref={formRef}
