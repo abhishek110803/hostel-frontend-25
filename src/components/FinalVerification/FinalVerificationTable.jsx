@@ -32,11 +32,12 @@ export default function SelfVerificationTable() {
     }
     return result;
   };
+  const base_url = `${import.meta.env.VITE_BASE_URL}`;
 
   const getConfirmationData = async () => {
     const url = '/get_confirmation_details.php';
     try {
-      let res = axiosInstance.post(url, { rollno: session.roll });
+      let res = axiosInstance.post(url, { code: session.code });
       await toast.promise(res, {
         loading: "Fetching data for you.",
         success: (data) => data?.data?.message,
@@ -103,25 +104,26 @@ export default function SelfVerificationTable() {
           </div>
         </div>
       </div>
-      {/* {session.underTaking === true ? <form ref={formRef}
-        action="https://v1.nitj.ac.in/hostelsNITJ/hoste_form.php"
+      {session.underTaking === true ? <form ref={formRef}
+        action= {`${base_url}/hostelsNITJ/hoste_form.php`}
         // action="http://localhost/Updated_Backend_Hostels_Allotment/single_undertaking.php" 
         method="post" target="_blank" style={{ display: 'none' }}>
         <input type="hidden" name="rollno" value={session?.application_id} />
       </form> :
         <form ref={formRef}
-          action="https://v1.nitj.ac.in/hostelsNITJ/undertaking.php"
+          action={`${base_url}/hostelsNITJ/undertaking.php`}
           // action="http://localhost/Updated_Backend_Hostels_Allotment/undertaking.php" 
           method="post" target="_blank" style={{ display: 'none' }}>
           <input type="hidden" name="rollno" value={session?.application_id} />
-        </form>} */}
+        </form>}
 
-      <form ref={formRef}
-        
-        action={`${import.meta.env.VITE_BASE_URL}undertaking.php`}
+      {/* <form ref={formRef}
+        // action="https://v1.nitj.ac.in/hostelsNITJ/hostel_form.php"
+        // action="http://localhost/hostel-php-first-year/hostel_form.php"
+        action="https://v1.nitj.ac.in/hostel-php-first-year-main/hostel_form.php"
         method="post" target="_blank" style={{ display: 'none' }}>
         <input type="hidden" name="application_id" value={session?.application_id} />
-      </form>
+      </form> */}
     </>
   );
 }
