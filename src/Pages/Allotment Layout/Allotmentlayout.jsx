@@ -72,47 +72,47 @@ function JustifiedExample() {
   const navigate = useNavigate();
 
   const getRoomData = async () => {
-    // try {
-    //   let url = (session?.sem === '1') ? `/first_year_get_room_details.php` : `/get_room_details.php`;
+    try {
+      let url = (session?.sem === '1') ? `/first_year_get_room_details.php` : `/get_room_details.php`;
 
-    //   let res = axiosInstance.post(url, {
-    //     code: session.code,
-    //     rollno: session?.roll,
-    //     application_id: session?.application_id,
-    //   });
-    //   await toast.promise(res, {
-    //     loading: "Fetching rooms for you.",
-    //     success: (data) => {
-    //       // console.log(data?.data);
-    //       return data?.data?.message;
-    //     },
-    //     error: (data) => {
-    //       // console.log('error data', data);
-    //       return data?.response?.data.message;
-    //     },
-    //   });
+      let res = axiosInstance.post(url, {
+        code: session.code,
+        rollno: session?.roll,
+        application_id: session?.application_id,
+      });
+      await toast.promise(res, {
+        loading: "Fetching rooms for you.",
+        success: (data) => {
+          // console.log(data?.data);
+          return data?.data?.message;
+        },
+        error: (data) => {
+          // console.log('error data', data);
+          return data?.response?.data.message;
+        },
+      });
 
-    //   res = await res;
+      res = await res;
 
-    //   //console.log('allotment layout: line-104', res);
+      //console.log('allotment layout: line-104', res);
 
-    //   if (res?.data?.isBooked === true) {
-    //     updateSession({ stepIndex: 6 ,step:6});
-    //     // navigate("/confirmationPage");
-    //     return;
-    //   }
+      if (res?.data?.isBooked === true) {
+        updateSession({ stepIndex: 6 ,step:6});
+        // navigate("/confirmationPage");
+        return;
+      }
 
-    //   if (res?.data?.status === "success") {
-    //     setFetchedData(res?.data?.rooms);
-    //     setSem(res?.data?.sem);
-    //     setCourse(res?.data?.course);
-    //     setGender(res?.data?.gender);
-    //     //  updateSession({ stepIndex: 6 ,step:6});
-    //     // hostel_name,room_no, total_seats,filled_seats,vacant_seats,
-    //   }
-    // } catch (error) {
-    //   console.error("Error accepting request.", error);
-    // }
+      if (res?.data?.status === "success") {
+        setFetchedData(res?.data?.rooms);
+        setSem(res?.data?.sem);
+        setCourse(res?.data?.course);
+        setGender(res?.data?.gender);
+        //  updateSession({ stepIndex: 6 ,step:6});
+        // hostel_name,room_no, total_seats,filled_seats,vacant_seats,
+      }
+    } catch (error) {
+      console.error("Error accepting request.", error);
+    }
   };
 
   useEffect(() => {
@@ -184,7 +184,7 @@ function JustifiedExample() {
       updateRoomData("MBH-F", mbhFState, setMbhFState, backendData);
       updateRoomData("BH-6", bh6State, setBh6State, backendData);
       updateRoomData("BH-7", bh7State, setBh7State, backendData);
-      // updateRoomData("BH-3", bh3State, setBh3State, backendData);
+      updateRoomData("BH-3", bh3State, setBh3State, backendData);
       updateRoomData("BH-4", bh4State, setBh4State, backendData);
       updateRoomData("BH-7E", bh7eState, setBh7eState, backendData);
       updateRoomData("GH-2", gh2State, setGh2State, backendData);
