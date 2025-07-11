@@ -184,7 +184,7 @@ function JustifiedExample() {
       updateRoomData("MBH-F", mbhFState, setMbhFState, backendData);
       updateRoomData("BH-6", bh6State, setBh6State, backendData);
       updateRoomData("BH-7", bh7State, setBh7State, backendData);
-      updateRoomData("BH-3", bh3State, setBh3State, backendData);
+      // updateRoomData("BH-3", bh3State, setBh3State, backendData);
       updateRoomData("BH-4", bh4State, setBh4State, backendData);
       updateRoomData("BH-7E", bh7eState, setBh7eState, backendData);
       updateRoomData("GH-2", gh2State, setGh2State, backendData);
