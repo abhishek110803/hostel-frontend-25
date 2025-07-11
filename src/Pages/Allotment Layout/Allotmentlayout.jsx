@@ -113,7 +113,7 @@ function JustifiedExample() {
   //   } catch (error) {
   //     console.error("Error accepting request.", error);
   //   }
-  // };
+  };
 
   useEffect(() => {
     getRoomData();
