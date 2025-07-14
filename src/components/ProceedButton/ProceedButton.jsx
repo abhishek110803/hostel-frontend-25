@@ -22,7 +22,8 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
 
     return {
       hostel_name: part1,
-      room_no: part2
+      room_no: part2,
+      bhacheed: "chatGptSeExtractKraLiyo",
     };
   }
   const sendToCaptchaForValidation = (e) => {
@@ -37,11 +38,8 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
 
   const handleProceed = async () => {
     var data = separateString(newSelectedRoom);
-    data.code = session?.code;
-    data.rollno = session?.roll;
-    data.application_id = session?.application_id;
-    
-   
+    data.code = session.code;
+    //  console.log('asdf;lkj', data);
     const userConfirmed = window.confirm(
       "In the future, you will not be able to update this. Do you want to proceed?"
     );
@@ -55,7 +53,6 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
             //console.log(data?.data);
             return data?.data?.message;
           },
-
           error: (data) => {
             //console.log(data?.response?.data);
             return data?.response?.data.message;
@@ -67,10 +64,8 @@ function ProceedButton({ newSelectedRoom, handleClick }) {
         res = await res;
 
         if (res?.data?.status === "success") {
-          // updateSession({ stepIndex: 6 });
-           updateSession({ stepIndex: 6 ,step:6});
+          updateSession({ stepIndex: 6 });
         }
-
       } catch (error) {
         console.error("Error Logging out the user.", error);
         setVerified(false);
