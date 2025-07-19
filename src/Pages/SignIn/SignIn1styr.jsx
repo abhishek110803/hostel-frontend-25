@@ -290,7 +290,10 @@ const UnifiedSignIn = () => {
       let resPromise = axiosInstance.post(endpoint, payload);
       await toast.promise(resPromise, {
         loading: "Logging you In...",
-        success: (data) => data?.data?.message,
+        success: (data) => {
+          console.log(data?.data);
+          return data?.data?.message
+        },
         error: (err) => {
           setVerified(false);
           setShowCaptcha(true);
