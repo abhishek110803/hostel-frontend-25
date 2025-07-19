@@ -195,7 +195,7 @@ const Otp = () => {
             });
             res = await res;
             if (res?.data?.status === "success") {
-                updateSession({ stepIndex: 2 });
+                updateSession({ step:2,stepIndex: 2 });
             }
         } catch (error) {
             console.error("Error Verifying OTP.", error);
