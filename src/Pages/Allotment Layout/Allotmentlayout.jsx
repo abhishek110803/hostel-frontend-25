@@ -26,6 +26,8 @@ import { mgh2020 } from "../../components/HostelSeats/mgh2020";
 import { mgh_p2_a } from "../../components/HostelSeats/MghPhase2A";
 import { mgh_p2_b } from "../../components/HostelSeats/MghPhase2B";
 
+import { bh1 } from "../../components/HostelSeats/Bh1";
+
 import { useEffect, useRef, useState } from "react";
 import Steps from "../../components/Navbar/Steps";
 import StepProcessBar from "../../components/StepProcessBar/StepProcessBar";
