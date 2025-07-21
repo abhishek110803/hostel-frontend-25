@@ -189,7 +189,7 @@ function JustifiedExample() {
       updateRoomData("BH-7", bh7State, setBh7State, backendData);
       updateRoomData("BH-3", bh3State, setBh3State, backendData);
       updateRoomData("BH-4", bh4State, setBh4State, backendData);
-      updateRoomData("BH-1", bh4State, setBh1State, backendData);
+      updateRoomData("BH-1", bh1State, setBh1State, backendData);
       updateRoomData("BH-7E", bh7eState, setBh7eState, backendData);
       updateRoomData("GH-2", gh2State, setGh2State, backendData);
       updateRoomData("GH-1", gh1State, setGh1State, backendData);
@@ -376,7 +376,7 @@ function JustifiedExample() {
 
             <BH1view1
               floor="Ground Floor"
-              hname="MBH-A"
+              hname="BH-1"
               roomsDetails={bh1.gf}
               newSelectedRoom={selectedRoom.roomID}
               extraThings={{
@@ -392,7 +392,7 @@ function JustifiedExample() {
                 ////console.log("gvvvv");
                 //console.log("room details: ", room);
                 setSelectedRoom({
-                  hname: "MBH-A",
+                  hname: "BH-1",
                   roomID: room.id,
                   roomNo: room.no,
                 });
