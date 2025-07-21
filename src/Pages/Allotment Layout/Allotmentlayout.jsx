@@ -26,7 +26,7 @@ import { mgh2020 } from "../../components/HostelSeats/mgh2020";
 import { mgh_p2_a } from "../../components/HostelSeats/MghPhase2A";
 import { mgh_p2_b } from "../../components/HostelSeats/MghPhase2B";
 
-import { bh1 } from "../../components/HostelSeats/Bh1";
+
 
 import { useEffect, useRef, useState } from "react";
 import Steps from "../../components/Navbar/Steps";
@@ -53,6 +53,7 @@ function JustifiedExample() {
   const [bh6State, setBh6State] = useState(bh6);
   const [bh7State, setBh7State] = useState(bh7);
   const [bh3State, setBh3State] = useState(bh3);
+  const [bh1State, setBh1State] = useState(bh1);
   const [bh4State, setBh4State] = useState(bh4);
   const [bh7eState, setBh7eState] = useState(bh7e);
   const [gh2State, setGh2State] = useState(gh2);
@@ -188,6 +189,7 @@ function JustifiedExample() {
       updateRoomData("BH-7", bh7State, setBh7State, backendData);
       updateRoomData("BH-3", bh3State, setBh3State, backendData);
       updateRoomData("BH-4", bh4State, setBh4State, backendData);
+      updateRoomData("BH-1", bh4State, setBh1State, backendData);
       updateRoomData("BH-7E", bh7eState, setBh7eState, backendData);
       updateRoomData("GH-2", gh2State, setGh2State, backendData);
       updateRoomData("GH-1", gh1State, setGh1State, backendData);
